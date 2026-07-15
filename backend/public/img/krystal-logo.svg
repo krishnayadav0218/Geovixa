@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 190" width="200" height="190">
+  <defs>
+    <linearGradient id="kTriGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4FC3F7"/>
+      <stop offset="55%" stop-color="#0B93D6"/>
+      <stop offset="100%" stop-color="#075E8A"/>
+    </linearGradient>
+    <linearGradient id="kRibbon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B93D6"/>
+      <stop offset="100%" stop-color="#4FC3F7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mountain / triangle outline -->
+  <path d="M100 8 L188 158 L12 158 Z"
+        fill="none" stroke="url(#kTriGrad)" stroke-width="9"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Inner peak facet for a subtle 3D-facet look -->
+  <path d="M100 8 L142 100 L100 88 L58 100 Z"
+        fill="url(#kTriGrad)" opacity="0.16"/>
+
+  <!-- "K" letterform inside the triangle -->
+  <g fill="#EAF6FD">
+    <rect x="80" y="58" width="11" height="70" rx="2"/>
+    <path d="M91 92 L124 58 H140 L104 94 L142 130 H125 Z" />
+  </g>
+
+  <!-- KRYSTAL ribbon banner across the base -->
+  <g>
+    <rect x="18" y="146" width="164" height="26" rx="13" fill="url(#kRibbon)"/>
+    <text x="100" y="164" text-anchor="middle"
+          font-family="'Space Grotesk','Segoe UI',sans-serif" font-weight="700"
+          font-size="15" letter-spacing="2.5" fill="#FFFFFF">KRYSTAL</text>
+  </g>
+</svg>
