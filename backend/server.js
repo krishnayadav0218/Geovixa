@@ -36,6 +36,10 @@ app.use('/api/auth/employee-login', loginLimiter);
 // Serve the admin web portal (static files)
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve saved selfie photos (written by photoStorage.js) at /uploads/photos/<file>
+const DATA_DIR = process.env.DATA_DIR || __dirname;
+app.use('/uploads', express.static(path.join(DATA_DIR, 'uploads')));
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
