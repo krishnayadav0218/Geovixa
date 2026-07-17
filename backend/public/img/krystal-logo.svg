@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 190" width="200" height="190">
+  <defs>
+    <linearGradient id="kTriGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4FC3F7"/>
+      <stop offset="55%" stop-color="#0B93D6"/>
+      <stop offset="100%" stop-color="#075E8A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mountain / triangle outline (thicker stroke reads clearly even at ~30-40px) -->
+  <path d="M100 10 L186 156 L14 156 Z"
+        fill="none" stroke="url(#kTriGrad)" stroke-width="15"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Solid accent band at the base, echoing the original ribbon without illegible tiny text -->
+  <rect x="26" y="146" width="148" height="14" rx="7" fill="url(#kTriGrad)"/>
+
+  <!-- Bold "K" letterform, sized to stay legible at small icon sizes -->
+  <g fill="#EAF6FD">
+    <rect x="74" y="50" width="16" height="80" rx="3"/>
+    <path d="M90 92 L136 50 H160 L110 94 L162 138 H137 Z" />
+  </g>
+</svg>
