@@ -270,8 +270,32 @@ function showEmployeeDashboard() {
   document.getElementById('emp-id').textContent = emp ? emp.employee_id : '-';
   document.getElementById('emp-today-date').textContent = formatISTDate(istNow());
   showView('employee-dashboard-view');
+
+  // Reset to the Attendance sub-tab every time the dashboard is (re)shown
+  document.querySelectorAll('.emp-subnav-item').forEach(i => i.classList.remove('active'));
+  document.querySelector('.emp-subnav-item[data-emp-tab="attendance"]').classList.add('active');
+  document.querySelectorAll('.emp-tab-content').forEach(t => t.classList.add('hidden'));
+  document.getElementById('emp-tab-attendance').classList.remove('hidden');
+
+  // Default the salary month picker to the current IST month (YYYY-MM)
+  const monthInput = document.getElementById('salary-month-input');
+  if (monthInput && !monthInput.value) {
+    monthInput.value = new Intl.DateTimeFormat('en-CA', { timeZone: IST_TZ, year: 'numeric', month: '2-digit' }).format(istNow());
+  }
+  document.getElementById('salary-slip-card').innerHTML = `<div class="salary-slip-empty">📄 Select a month and tap "View Salary Slip" to see your breakdown.</div>`;
+  document.getElementById('salary-download-btn').disabled = true;
+
   loadMyStatus();
 }
+
+document.querySelectorAll('.emp-subnav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.emp-subnav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    document.querySelectorAll('.emp-tab-content').forEach(t => t.classList.add('hidden'));
+    document.getElementById('emp-tab-' + item.dataset.empTab).classList.remove('hidden');
+  });
+});
 
 async function loadMyStatus(silent = false) {
   const emp = getEmployeeInfo();
@@ -322,6 +346,86 @@ function renderTodayAttendance(records) {
     </tr>
   `).join('');
 }
+
+// ---------------- SALARY SLIP (employee self-service) ----------------
+let lastLoadedSalaryMonth = null;
+
+document.getElementById('salary-view-btn').addEventListener('click', loadMySalarySlip);
+
+async function loadMySalarySlip() {
+  const month = document.getElementById('salary-month-input').value; // YYYY-MM
+  const card = document.getElementById('salary-slip-card');
+  const downloadBtn = document.getElementById('salary-download-btn');
+
+  if (!month) {
+    showToast('Please select a month', true);
+    return;
+  }
+
+  card.innerHTML = `<div class="salary-slip-empty">Loading…</div>`;
+  downloadBtn.disabled = true;
+
+  try {
+    const data = await apiFetch(`/salary/my/slip?month=${encodeURIComponent(month)}`);
+    renderSalarySlip(data.slip);
+    lastLoadedSalaryMonth = month;
+    downloadBtn.disabled = false;
+  } catch (err) {
+    card.innerHTML = `<div class="salary-slip-empty">${err.message}</div>`;
+    showToast(err.message, true);
+  }
+}
+
+function renderSalarySlip(slip) {
+  const card = document.getElementById('salary-slip-card');
+  const a = slip.attendance;
+  const e = slip.earnings;
+
+  card.innerHTML = `
+    <div class="salary-summary-row">
+      <div class="salary-summary-chip"><div class="n">${slip.daysInMonth}</div><div class="l">Days in Month</div></div>
+      <div class="salary-summary-chip"><div class="n">${a.present}</div><div class="l">Present</div></div>
+      <div class="salary-summary-chip"><div class="n">${a.halfDay}</div><div class="l">Half Day</div></div>
+      <div class="salary-summary-chip"><div class="n">${a.absent}</div><div class="l">Absent</div></div>
+      <div class="salary-summary-chip"><div class="n">${a.weeklyOff}</div><div class="l">Weekly Off</div></div>
+      <div class="salary-summary-chip"><div class="n">${a.payableDays}</div><div class="l">Payable Days</div></div>
+    </div>
+    <table class="salary-breakdown-table">
+      <tbody>
+        <tr><td>Basic Salary (earned)</td><td>₹ ${e.basic.toFixed(2)}</td></tr>
+        <tr><td>HRA (earned)</td><td>₹ ${e.hra.toFixed(2)}</td></tr>
+        <tr><td>Other Allowances (earned)</td><td>₹ ${e.otherAllowances.toFixed(2)}</td></tr>
+        <tr class="total"><td>Gross Earned</td><td>₹ ${e.grossEarned.toFixed(2)}</td></tr>
+        <tr class="deduction"><td>Deductions</td><td>− ₹ ${slip.deductions.toFixed(2)}</td></tr>
+        <tr class="net"><td>Net Pay</td><td>₹ ${slip.netPay.toFixed(2)}</td></tr>
+      </tbody>
+    </table>
+  `;
+}
+
+document.getElementById('salary-download-btn').addEventListener('click', () => {
+  const month = lastLoadedSalaryMonth || document.getElementById('salary-month-input').value;
+  if (!month) { showToast('Please view a salary slip first', true); return; }
+
+  fetch(`${API}/salary/my/slip/pdf?month=${encodeURIComponent(month)}`, {
+    headers: { Authorization: `Bearer ${getToken()}` }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Could not download salary slip');
+      return res.blob();
+    })
+    .then(blob => {
+      const a = document.createElement('a');
+      const objUrl = window.URL.createObjectURL(blob);
+      a.href = objUrl;
+      a.download = `Salary_Slip_${month}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('Salary slip downloaded');
+    })
+    .catch(err => showToast(err.message, true));
+});
 
 // ---------------- PUNCH IN / OUT via camera + geolocation ----------------
 let cameraStream = null;
@@ -1081,6 +1185,7 @@ async function loadEmployees() {
         <td class="admin-only-cell">
           ${isAdmin ? `
             <button class="btn secondary small" onclick="openEditEmployeeModal('${e.employee_id}')">Edit</button>
+            <button class="btn secondary small" onclick="openSalaryModal('${e.employee_id}')">💰 Salary</button>
             <button class="btn secondary small" onclick="toggleEmployee('${e.employee_id}', ${e.active ? 0 : 1})">
               ${e.active ? 'Deactivate' : 'Activate'}
             </button>
@@ -1199,6 +1304,59 @@ async function toggleEmployee(employeeId, activeValue) {
     showToast(err.message, true);
   }
 }
+
+// ---- Salary Structure modal (admin only — button only rendered for admins in
+// loadEmployees(), and the backend's PUT /api/salary/:id route is locked to verifyAdmin
+// regardless, so a manager/coordinator can never call this even directly) ----
+async function openSalaryModal(employeeId) {
+  const e = employeeCache[employeeId];
+  document.getElementById('salary-modal-emp-id').value = employeeId;
+  document.getElementById('salary-modal-emp').textContent = e ? `${employeeId} — ${e.name}` : employeeId;
+  document.getElementById('salary-modal-basic').value = '';
+  document.getElementById('salary-modal-hra').value = '';
+  document.getElementById('salary-modal-allowances').value = '';
+  document.getElementById('salary-modal-deductions').value = '';
+  document.getElementById('salary-modal').classList.remove('hidden');
+
+  try {
+    const data = await apiFetch(`/salary/${employeeId}`);
+    const s = data.salary;
+    document.getElementById('salary-modal-basic').value = Number(s.basic_salary) || 0;
+    document.getElementById('salary-modal-hra').value = Number(s.hra) || 0;
+    document.getElementById('salary-modal-allowances').value = Number(s.other_allowances) || 0;
+    document.getElementById('salary-modal-deductions').value = Number(s.deductions) || 0;
+  } catch (err) {
+    showToast(err.message, true);
+  }
+}
+
+function closeSalaryModal() {
+  document.getElementById('salary-modal').classList.add('hidden');
+}
+
+document.getElementById('salary-modal-cancel-btn').addEventListener('click', closeSalaryModal);
+document.getElementById('salary-modal').addEventListener('click', (ev) => {
+  if (ev.target.id === 'salary-modal') closeSalaryModal(); // click on the dark backdrop
+});
+
+document.getElementById('salary-modal-save-btn').addEventListener('click', async () => {
+  const employeeId = document.getElementById('salary-modal-emp-id').value;
+  const basic_salary = document.getElementById('salary-modal-basic').value || 0;
+  const hra = document.getElementById('salary-modal-hra').value || 0;
+  const other_allowances = document.getElementById('salary-modal-allowances').value || 0;
+  const deductions = document.getElementById('salary-modal-deductions').value || 0;
+
+  try {
+    await apiFetch(`/salary/${employeeId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ basic_salary, hra, other_allowances, deductions })
+    });
+    showToast(`Salary updated for ${employeeId}`);
+    closeSalaryModal();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
 
 // ---------------- BULK EMPLOYEE IMPORT (admin only) ----------------
 // Maps flexible header names (case-insensitive) from an uploaded file to our field names.
