@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Krystal Connect</title>
+<link rel="icon" type="image/svg+xml" href="/img/krystal-logo.svg" />
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- ================= ROLE SELECT VIEW ================= -->
+<div id="role-select-view" class="auth-view">
+  <div class="auth-bg"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span><span class="grid-overlay"></span><div class="logo-3d-stage"><img src="/img/krystal-logo.svg" class="logo-3d" alt="" aria-hidden="true" /></div></div>
+  <div class="role-card-wrap fade-in-up">
+    <div class="brand-mark center logo-entrance">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo big" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Krystal Connect · Geo-Attendance Web App</div>
+      </div>
+    </div>
+    <h1 class="role-title">Sign in as</h1>
+    <div class="role-cards">
+      <div class="role-card" data-role="employee" style="--d:0s">
+        <div class="role-icon-wrap"><div class="role-icon">🧑‍💼</div></div>
+        <div class="role-name">Employee</div>
+        <div class="role-desc">Login with your Employee ID. Punch in/out &amp; view your attendance.</div>
+        <div class="role-arrow">→</div>
+      </div>
+      <div class="role-card" data-role="manager" style="--d:0.08s">
+        <div class="role-icon-wrap"><div class="role-icon">🗂️</div></div>
+        <div class="role-name">Manager</div>
+        <div class="role-desc">View employee attendance records &amp; download reports.</div>
+        <div class="role-arrow">→</div>
+      </div>
+      <div class="role-card" data-role="admin" style="--d:0.16s">
+        <div class="role-icon-wrap"><div class="role-icon">🛡️</div></div>
+        <div class="role-name">Admin</div>
+        <div class="role-desc">Full access — manage employees, records, managers &amp; settings.</div>
+        <div class="role-arrow">→</div>
+      </div>
+      <div class="role-card" data-role="coordinator" style="--d:0.24s">
+        <div class="role-icon-wrap"><div class="role-icon">💎</div></div>
+        <div class="role-name">Coordinator</div>
+        <div class="role-desc">View employee attendance records &amp; download reports.</div>
+        <div class="role-arrow">→</div>
+      </div>
+      <div class="role-card" data-role="report" style="--d:0.32s">
+        <div class="role-icon-wrap"><div class="role-icon">📋</div></div>
+        <div class="role-name">Reports</div>
+        <div class="role-desc">Area Officer, Supervisor &amp; other report-only roles.</div>
+        <div class="role-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EMPLOYEE LOGIN ================= -->
+<div id="employee-login-view" class="hidden auth-view">
+  <div class="auth-bg"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span><span class="grid-overlay"></span><div class="logo-3d-stage"><img src="/img/krystal-logo.svg" class="logo-3d" alt="" aria-hidden="true" /></div></div>
+  <div class="login-card fade-in-up">
+    <div class="back-link" data-back="role-select-view">← Back</div>
+    <div class="brand-mark logo-entrance">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Employee Login</div>
+      </div>
+    </div>
+    <div class="role-tag employee">🧑‍💼 EMPLOYEE ACCESS</div>
+    <h1>Welcome back</h1>
+    <p class="desc">Enter your Employee ID to continue. No password needed.</p>
+    <div class="error-msg" id="employee-login-error"></div>
+    <div class="field floating">
+      <input type="text" id="employee-login-id" placeholder=" " autocomplete="off" />
+      <label>Employee ID</label>
+    </div>
+    <button class="btn" id="employee-login-btn"><span>Login</span></button>
+  </div>
+</div>
+
+<!-- ================= MANAGER LOGIN ================= -->
+<div id="manager-login-view" class="hidden auth-view">
+  <div class="auth-bg"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span><span class="grid-overlay"></span><div class="logo-3d-stage"><img src="/img/krystal-logo.svg" class="logo-3d" alt="" aria-hidden="true" /></div></div>
+  <div class="login-card fade-in-up">
+    <div class="back-link" data-back="role-select-view">← Back</div>
+    <div class="brand-mark logo-entrance">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Manager Login</div>
+      </div>
+    </div>
+    <div class="role-tag manager">🗂️ MANAGER ACCESS</div>
+    <h1>Welcome back</h1>
+    <p class="desc">Sign in to view attendance records and download reports.</p>
+    <div class="error-msg" id="manager-login-error"></div>
+    <div class="field floating">
+      <input type="text" id="manager-login-username" placeholder=" " autocomplete="username" />
+      <label>Username</label>
+    </div>
+    <div class="field floating">
+      <input type="password" id="manager-login-password" placeholder=" " autocomplete="current-password" />
+      <label>Password</label>
+    </div>
+    <button class="btn" id="manager-login-btn"><span>Sign In</span></button>
+  </div>
+</div>
+
+<!-- ================= COORDINATOR LOGIN ================= -->
+<div id="coordinator-login-view" class="hidden auth-view">
+  <div class="auth-bg"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span><span class="grid-overlay"></span><div class="logo-3d-stage"><img src="/img/krystal-logo.svg" class="logo-3d" alt="" aria-hidden="true" /></div></div>
+  <div class="login-card fade-in-up">
+    <div class="back-link" data-back="role-select-view">← Back</div>
+    <div class="brand-mark logo-entrance">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Coordinator Login</div>
+      </div>
+    </div>
+    <div class="role-tag coordinator">💎 COORDINATOR ACCESS</div>
+    <h1>Welcome back</h1>
+    <p class="desc">Sign in to view attendance records and download reports.</p>
+    <div class="error-msg" id="coordinator-login-error"></div>
+    <div class="field floating">
+      <input type="text" id="coordinator-login-username" placeholder=" " autocomplete="username" />
+      <label>Username</label>
+    </div>
+    <div class="field floating">
+      <input type="password" id="coordinator-login-password" placeholder=" " autocomplete="current-password" />
+      <label>Password</label>
+    </div>
+    <button class="btn" id="coordinator-login-btn"><span>Sign In</span></button>
+  </div>
+</div>
+
+<!-- ================= REPORT-ONLY ROLE LOGIN (Area Officer / Supervisor / etc.) ================= -->
+<div id="report-login-view" class="hidden auth-view">
+  <div class="auth-bg"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span><span class="grid-overlay"></span><div class="logo-3d-stage"><img src="/img/krystal-logo.svg" class="logo-3d" alt="" aria-hidden="true" /></div></div>
+  <div class="login-card fade-in-up">
+    <div class="back-link" data-back="role-select-view">← Back</div>
+    <div class="brand-mark logo-entrance">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Reports Login</div>
+      </div>
+    </div>
+    <div class="role-tag coordinator">📋 REPORT ACCESS</div>
+    <h1>Welcome back</h1>
+    <p class="desc">Sign in to view and download your assigned reports.</p>
+    <div class="error-msg" id="report-login-error"></div>
+    <div class="field floating">
+      <input type="text" id="report-login-username" placeholder=" " autocomplete="username" />
+      <label>Username</label>
+    </div>
+    <div class="field floating">
+      <input type="password" id="report-login-password" placeholder=" " autocomplete="current-password" />
+      <label>Password</label>
+    </div>
+    <button class="btn" id="report-login-btn"><span>Sign In</span></button>
+  </div>
+</div>
+
+<!-- ================= ADMIN LOGIN ================= -->
+<div id="admin-login-view" class="hidden auth-view">
+  <div class="auth-bg"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span><span class="grid-overlay"></span><div class="logo-3d-stage"><img src="/img/krystal-logo.svg" class="logo-3d" alt="" aria-hidden="true" /></div></div>
+  <div class="login-card fade-in-up">
+    <div class="back-link" data-back="role-select-view">← Back</div>
+    <div class="brand-mark logo-entrance">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Admin Login</div>
+      </div>
+    </div>
+    <div class="role-tag admin">🛡️ ADMIN ACCESS</div>
+    <h1>Welcome back</h1>
+    <p class="desc">Sign in for full access to the Krystal Connect attendance system.</p>
+    <div class="error-msg" id="admin-login-error"></div>
+    <div class="field floating">
+      <input type="text" id="admin-login-username" placeholder=" " autocomplete="username" />
+      <label>Username</label>
+    </div>
+    <div class="field floating">
+      <input type="password" id="admin-login-password" placeholder=" " autocomplete="current-password" />
+      <label>Password</label>
+    </div>
+    <button class="btn" id="admin-login-btn"><span>Sign In</span></button>
+  </div>
+</div>
+
+<!-- ================= EMPLOYEE DASHBOARD ================= -->
+<div id="employee-dashboard-view" class="hidden">
+  <div class="emp-topbar">
+    <div class="brand-mark">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Krystal Connect</div>
+      </div>
+    </div>
+    <div class="emp-user-box">
+      <div>
+        <div class="emp-user-name" id="emp-name">-</div>
+        <div class="emp-user-id mono" id="emp-id">-</div>
+      </div>
+      <div class="nav-item" id="emp-logout-btn">🚪 Logout</div>
+    </div>
+  </div>
+
+  <div class="emp-main">
+    <div class="emp-subnav">
+      <div class="emp-subnav-item active" data-emp-tab="attendance">📍 Attendance</div>
+      <div class="emp-subnav-item" data-emp-tab="salary">💰 Salary Slip</div>
+      <div class="emp-subnav-item" data-emp-tab="leave">📝 Apply for Leave</div>
+    </div>
+
+    <div class="emp-tab-content" id="emp-tab-attendance">
+      <div class="panel emp-punch-panel">
+        <div class="panel-header">
+          <h3>Mark Attendance</h3>
+          <span class="mono" id="emp-today-date" style="color:var(--text-muted);font-size:12px"></span>
+        </div>
+        <div class="emp-status-row">
+          <div class="emp-current-status" id="emp-current-status">Status: <b>Not marked today</b></div>
+        </div>
+        <div class="emp-punch-buttons">
+          <button class="btn onduty-btn" id="punch-in-btn">✅ Punch In (On Duty)</button>
+          <button class="btn secondary offduty-btn" id="punch-out-btn">⏹ Punch Out (Off Duty)</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3 id="my-history-count">Today's Attendance</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Photo</th><th>Date</th><th>Status</th><th>Location</th><th>Time</th></tr>
+            </thead>
+            <tbody id="my-history-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="emp-tab-content hidden" id="emp-tab-salary">
+      <div class="panel">
+        <div class="panel-header"><h3>My Salary Slip</h3></div>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">
+          Pick a month (last 3 months only) and raise a request. Once your project's coordinator approves it, you'll be able to view and download that month's salary slip here.
+        </p>
+        <div class="salary-picker-row">
+          <div class="field">
+            <label>Month</label>
+            <select id="salary-month-input"></select>
+          </div>
+          <button class="btn secondary small" id="salary-request-btn">📨 Raise Request</button>
+          <button class="btn secondary small" id="salary-view-btn" disabled>View Salary Slip</button>
+          <button class="btn small" id="salary-download-btn" disabled>⬇ Download PDF</button>
+        </div>
+        <div id="salary-request-status" style="font-size:12px;margin:8px 0;color:var(--text-muted)"></div>
+
+        <div class="panel-header" style="margin-top:18px"><h3>My Requests</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Month</th><th>Status</th><th>Requested At</th><th>Reviewed At</th></tr></thead>
+            <tbody id="my-salary-requests-body"></tbody>
+          </table>
+        </div>
+
+        <div class="salary-slip-card" id="salary-slip-card">
+          <div class="salary-slip-empty">📄 Once a request is approved, select that month and tap "View Salary Slip".</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="emp-tab-content hidden" id="emp-tab-leave">
+      <div class="panel">
+        <div class="panel-header"><h3>Apply for Leave</h3></div>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">
+          Fill in the dates you need leave for, a reason, and (optionally) attach a supporting document. Your application will be reviewed by your admin/coordinator.
+        </p>
+        <div class="form-row">
+          <div class="field">
+            <label>Leave From</label>
+            <input type="date" id="leave-from-date" />
+          </div>
+          <div class="field">
+            <label>Leave To</label>
+            <input type="date" id="leave-to-date" />
+          </div>
+        </div>
+        <div id="leave-days-count" style="font-size:12px;color:var(--text-muted);margin:-6px 0 14px"></div>
+        <div class="field">
+          <label>Reason</label>
+          <textarea id="leave-reason" rows="3" placeholder="e.g. Fever, family function, personal work..."></textarea>
+        </div>
+        <div class="field">
+          <label>Attachment (optional, max 5MB)</label>
+          <input type="file" id="leave-attachment" accept="image/*,.pdf,.doc,.docx" />
+          <div id="leave-attachment-name" style="font-size:12px;color:var(--text-muted);margin-top:4px"></div>
+        </div>
+        <button class="btn" id="leave-submit-btn">📨 Submit Leave Application</button>
+        <div id="leave-submit-status" style="font-size:12px;margin:8px 0;color:var(--text-muted)"></div>
+
+        <div class="panel-header" style="margin-top:18px"><h3>My Leave Applications</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>From</th><th>To</th><th>Days</th><th>Reason</th><th>Attachment</th><th>Status</th><th>Applied At</th></tr></thead>
+            <tbody id="my-leave-requests-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CAMERA / SELFIE CAPTURE MODAL ================= -->
+<div id="camera-modal" class="hidden">
+  <div class="camera-box">
+    <h3 id="camera-modal-title">Take a Selfie to Punch In</h3>
+    <video id="camera-video" autoplay playsinline></video>
+    <canvas id="camera-canvas" class="hidden"></canvas>
+    <div class="camera-status" id="camera-status">Requesting camera & location access…</div>
+    <div class="camera-actions">
+      <button class="btn" id="camera-capture-btn" disabled>📸 Capture & Submit</button>
+      <button class="btn secondary" id="camera-cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EDIT EMPLOYEE MODAL (admin only) ================= -->
+<div id="edit-emp-modal" class="hidden">
+  <div class="edit-emp-box">
+    <h3>Edit Employee</h3>
+    <input type="hidden" id="edit-emp-id" />
+    <div class="form-row">
+      <div class="field">
+        <label>Employee ID</label>
+        <input type="text" id="edit-emp-id-display" disabled />
+      </div>
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="edit-emp-name" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Designation</label>
+        <input type="text" id="edit-emp-designation" />
+      </div>
+      <div class="field">
+        <label>Phone</label>
+        <input type="text" id="edit-emp-phone" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Employee Location</label>
+        <input type="text" id="edit-emp-location" />
+      </div>
+      <div class="field">
+        <label>Date of Joining (DOJ)</label>
+        <input type="date" id="edit-emp-doj" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Zone</label>
+        <input type="text" id="edit-emp-zone" placeholder="e.g. Zone 3" />
+      </div>
+      <div class="field">
+        <label>Ward</label>
+        <input type="text" id="edit-emp-ward" placeholder="e.g. Ward K/West" />
+      </div>
+      <div class="field">
+        <label>Site Code</label>
+        <input type="text" id="edit-emp-sitecode" placeholder="e.g. SITE-001" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Project</label>
+        <select id="edit-emp-project">
+          <option value="">— Select Project —</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Shift Category</label>
+        <select id="edit-emp-shift">
+          <option value="">— Select —</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:6px;justify-content:flex-end">
+      <button class="btn secondary small" id="edit-emp-cancel-btn">Cancel</button>
+      <button class="btn small" id="edit-emp-save-btn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SALARY STRUCTURE MODAL (admin only) ================= -->
+<div id="salary-modal" class="hidden">
+  <div class="salary-modal-box">
+    <h3>Set Monthly Salary</h3>
+    <div class="sub" id="salary-modal-emp">Employee ID</div>
+    <input type="hidden" id="salary-modal-emp-id" />
+    <div class="form-row">
+      <div class="field">
+        <label>Basic Salary (₹/month)</label>
+        <input type="number" id="salary-modal-basic" placeholder="0" min="0" step="1" />
+      </div>
+      <div class="field">
+        <label>HRA (₹/month)</label>
+        <input type="number" id="salary-modal-hra" placeholder="0" min="0" step="1" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Other Allowances (₹/month)</label>
+        <input type="number" id="salary-modal-allowances" placeholder="0" min="0" step="1" />
+      </div>
+      <div class="field">
+        <label>Deductions (₹/month)</label>
+        <input type="number" id="salary-modal-deductions" placeholder="0" min="0" step="1" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>PF (₹/month)</label>
+        <input type="number" id="salary-modal-pf" placeholder="0" min="0" step="1" />
+      </div>
+      <div class="field">
+        <label>ESIC (₹/month)</label>
+        <input type="number" id="salary-modal-esic" placeholder="0" min="0" step="1" />
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);margin:2px 0 14px">
+      Basic/HRA/Allowances are pro-rated by that month's attendance (Present + Half Day×0.5 + Weekly Off) when the employee's salary slip is generated. Deductions, PF and ESIC are applied in full.
+    </p>
+    <div class="form-row" style="justify-content:flex-end">
+      <button class="btn secondary small" id="salary-modal-cancel-btn">Cancel</button>
+      <button class="btn small" id="salary-modal-save-btn">Save Salary</button>
+    </div>
+  </div>
+</div>
+<div id="dashboard-view" class="hidden">
+  <div class="sidebar">
+    <div class="brand-row">
+      <div class="brand-mark">
+        <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+        <div>
+          <div class="name">Krystal Connect</div>
+          <div class="sub">Krystal Connect</div>
+        </div>
+      </div>
+      <div class="role-pill" id="role-pill">ADMIN</div>
+      <div class="role-pill hidden" id="project-pill" style="background:#0d3b66"></div>
+    </div>
+    <div class="nav-list">
+      <div class="nav-item active" data-tab="overview">📊 Overview</div>
+      <div class="nav-item" data-tab="attendance">📍 Attendance Log</div>
+
+      <div class="nav-group">
+        <div class="nav-item" data-tab="reports">
+          <span>🗓️ Reports</span>
+          <span class="nav-caret">▾</span>
+        </div>
+        <div class="nav-sub">
+          <div class="nav-sub-item" data-tab="reports" data-target="report-panel-attendance">Attendance Report</div>
+          <div class="nav-sub-item" data-tab="reports" data-target="report-panel-punch">Employee Punch Time Report</div>
+          <div class="nav-sub-item" data-tab="reports" data-target="report-panel-empdata">Employee Data Report</div>
+          <div class="nav-sub-item" data-tab="reports" data-target="report-panel-shiftcycle">Shift Cycle Report (8 Hrs FA)</div>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-item" data-tab="employees">
+          <span>👥 Employees</span>
+          <span class="nav-caret">▾</span>
+        </div>
+        <div class="nav-sub">
+          <div class="nav-sub-item admin-only" data-tab="employees" data-target="manage-projects-panel">Manage Projects</div>
+          <div class="nav-sub-item admin-only" data-tab="employees" data-target="manage-shift-categories-panel">Shift Categories</div>
+          <div class="nav-sub-item" data-tab="employees" data-target="emp-select-project-panel">Employee List</div>
+        </div>
+      </div>
+
+      <div class="nav-item" data-tab="salary-requests">🧾 Salary Slip Requests</div>
+      <div class="nav-item" data-tab="leave-requests">🗓️ Leave Requests</div>
+      <div class="nav-item admin-only" data-tab="managers">🗂️ Managers</div>
+      <div class="nav-item admin-only" data-tab="coordinators">💎 Coordinators</div>
+      <div class="nav-item admin-only" data-tab="settings">⚙️ Settings</div>
+      <div class="nav-item" id="logout-btn">🚪 Logout</div>
+    </div>
+  </div>
+
+  <div class="main-content">
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-content" id="tab-overview">
+      <div class="topbar">
+        <h2>Today's Overview</h2>
+        <div class="date" id="today-date"></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card total">
+          <div class="label">Total Employees</div>
+          <div class="value" id="stat-total">-</div>
+        </div>
+        <div class="stat-card onduty">
+          <div class="label">On Duty</div>
+          <div class="value" id="stat-on-duty">-</div>
+        </div>
+        <div class="stat-card offduty">
+          <div class="label">Off Duty</div>
+          <div class="value" id="stat-off-duty">-</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="label">Not Punched Today</div>
+          <div class="value" id="stat-pending">-</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Today's Live Status</h3>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Photo</th><th>Employee ID</th><th>Name</th>
+                <th>Status</th><th>Last Punch Time</th><th>Location</th>
+              </tr>
+            </thead>
+            <tbody id="summary-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTENDANCE LOG TAB -->
+    <div class="tab-content hidden" id="tab-attendance">
+      <div class="topbar"><h2>Attendance Log</h2></div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Filter Records</h3>
+          <button class="btn small" id="download-excel-btn">⬇ Download Excel</button>
+        </div>
+        <div class="filters">
+          <div class="field">
+            <label>From Date</label>
+            <input type="date" id="filter-from" />
+          </div>
+          <div class="field">
+            <label>To Date</label>
+            <input type="date" id="filter-to" />
+          </div>
+          <div class="field">
+            <label>Employee ID</label>
+            <input type="text" id="filter-emp" placeholder="e.g. EMP001" />
+          </div>
+          <div class="field">
+            <label>Location</label>
+            <input type="text" id="filter-location" placeholder="e.g. Mumbai Site" />
+          </div>
+          <div class="field">
+            <label>Project</label>
+            <select id="filter-project">
+              <option value="">All Projects</option>
+            </select>
+          </div>
+          <button class="btn secondary small" id="apply-filter-btn">Apply Filter</button>
+          <button class="btn secondary small" id="clear-filter-btn">Clear</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3 id="records-count">Records</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Photo</th><th>Date</th><th>Employee ID</th><th>Name</th><th>Project</th>
+                <th>Status</th><th>Location (Lat, Lng)</th><th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS TAB (admin + manager) -->
+    <div class="tab-content hidden" id="tab-reports">
+      <div class="topbar"><h2>Reports</h2></div>
+
+      <div class="panel" id="report-panel-attendance">
+        <div class="panel-header">
+          <h3>Attendance Report</h3>
+          <button class="btn small" id="download-summary-excel-btn">⬇ Download Excel</button>
+        </div>
+        <div class="filters">
+          <div class="field">
+            <label>From Date</label>
+            <input type="date" id="report-from" />
+          </div>
+          <div class="field">
+            <label>To Date</label>
+            <input type="date" id="report-to" />
+          </div>
+          <div class="field">
+            <label>Location</label>
+            <input type="text" id="report-location" placeholder="e.g. Mumbai Site" />
+          </div>
+          <div class="field">
+            <label>Zone</label>
+            <input type="text" id="report-zone" placeholder="e.g. Zone 3" />
+          </div>
+          <div class="field">
+            <label>Ward</label>
+            <input type="text" id="report-ward" placeholder="e.g. Ward K/West" />
+          </div>
+          <div class="field">
+            <label>Project</label>
+            <select id="report-project">
+              <option value="">All Projects</option>
+            </select>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:6px">
+          P = full day (shift completed) · HD = half day (worked minimum half-shift hours) · A = absent or punched in without punching out · W/O = Sunday weekly off · — = before Date of Joining
+        </p>
+      </div>
+
+      <div class="panel" id="report-panel-punch">
+        <div class="panel-header">
+          <h3>Employee Punch Time Report</h3>
+          <button class="btn small" id="download-punch-excel-btn">⬇ Download Excel</button>
+        </div>
+        <div class="filters">
+          <div class="field">
+            <label>From Date</label>
+            <input type="date" id="punch-report-from" />
+          </div>
+          <div class="field">
+            <label>To Date</label>
+            <input type="date" id="punch-report-to" />
+          </div>
+          <div class="field">
+            <label>Employee ID (optional)</label>
+            <input type="text" id="punch-report-emp" placeholder="e.g. EMP001" />
+          </div>
+          <div class="field">
+            <label>Location</label>
+            <input type="text" id="punch-report-location" placeholder="e.g. Mumbai Site" />
+          </div>
+          <div class="field">
+            <label>Zone</label>
+            <input type="text" id="punch-report-zone" placeholder="e.g. Zone 3" />
+          </div>
+          <div class="field">
+            <label>Ward</label>
+            <input type="text" id="punch-report-ward" placeholder="e.g. Ward K/West" />
+          </div>
+          <div class="field">
+            <label>Project</label>
+            <select id="punch-report-project">
+              <option value="">All Projects</option>
+            </select>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:6px">
+          Har employee ke har punch-in / punch-out ka pura log — date, on duty/off duty time, location, working hours (same data jo Attendance Log tab se milta hai).
+        </p>
+      </div>
+
+      <div class="panel" id="report-panel-empdata">
+        <div class="panel-header">
+          <h3>Employee Data Report</h3>
+          <button class="btn small" id="download-employees-excel-btn">⬇ Download Excel</button>
+        </div>
+        <div class="filters">
+          <div class="field">
+            <label>Location (optional)</label>
+            <input type="text" id="employee-report-location" placeholder="Leave blank for all" />
+          </div>
+          <div class="field">
+            <label>Zone (optional)</label>
+            <input type="text" id="employee-report-zone" placeholder="Leave blank for all" />
+          </div>
+          <div class="field">
+            <label>Ward (optional)</label>
+            <input type="text" id="employee-report-ward" placeholder="Leave blank for all" />
+          </div>
+          <div class="field">
+            <label>Project (optional)</label>
+            <select id="employee-report-project">
+              <option value="">All Projects</option>
+            </select>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:6px">
+          Downloads full employee master data — ID, name, designation, project, shift category, zone, ward, site code, phone, location, DOJ, status.
+        </p>
+      </div>
+
+      <div class="panel" id="report-panel-shiftcycle">
+        <div class="panel-header">
+          <h3>Shift Cycle Report (8 Hrs - FA)</h3>
+          <button class="btn small" id="download-shiftcycle-excel-btn">⬇ Download Excel</button>
+        </div>
+        <div class="filters">
+          <div class="field">
+            <label>From Date</label>
+            <input type="date" id="shiftcycle-report-from" />
+          </div>
+          <div class="field">
+            <label>To Date</label>
+            <input type="date" id="shiftcycle-report-to" />
+          </div>
+          <div class="field">
+            <label>Location</label>
+            <input type="text" id="shiftcycle-report-location" placeholder="e.g. Mumbai Site" />
+          </div>
+          <div class="field">
+            <label>Zone</label>
+            <input type="text" id="shiftcycle-report-zone" placeholder="e.g. Zone 3" />
+          </div>
+          <div class="field">
+            <label>Ward</label>
+            <input type="text" id="shiftcycle-report-ward" placeholder="e.g. Ward K/West" />
+          </div>
+          <div class="field">
+            <label>Project</label>
+            <select id="shiftcycle-report-project">
+              <option value="">All Projects</option>
+            </select>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:6px">
+          Sirf <b>8 Hrs - FA</b> shift category ke employees ke liye — har on-duty (login) punch ke time se pata karta hai woh Morning (7–8 AM login), Afternoon (3–4 PM login), ya Night (11 PM–12 AM login) shift thi. Location column employee ki us punch ki <b>live location</b> hai (jo pehle se profile mein feed hai wo nahi), aur Count batata hai ki usi date + usi live location + usi shift mein kitne employees on-duty the.
+        </p>
+      </div>
+    </div>
+
+    <!-- EMPLOYEES TAB -->
+    <div class="tab-content hidden" id="tab-employees">
+      <div class="topbar"><h2>Employees</h2></div>
+
+      <!-- STEP 1: PROJECT PICKER — default view. Employees are organised project-wise; pick
+           a project below to open its own, separate employee section. MCGM's 3 parts (MCGM,
+           MCGM HK, MCGM Education) show as a single combined "MCGM" row here, though their
+           employee lists stay completely separate underneath. -->
+      <div id="emp-project-picker-view">
+        <div class="panel admin-only" id="manage-projects-panel">
+          <div class="panel-header"><h3>Manage Projects</h3></div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+            Har employee ko ek Project assign karo (MTDC, MCGM HK, MCGM, Security, MCGM Education, Others, ya apna naya project add karo). Har project ka apna Weekly Off day bhi set kar sakte ho — zaroori nahi ki sabka Sunday ho. Do ya zyada projects ko same <b>Group Name</b> dene se woh ek combined group ban jaate hain (jaise MCGM) — group ke andar bhi har project ka data alag hi rehta hai, sirf navigation/access combine hota hai.
+          </p>
+          <div class="form-row" style="align-items:flex-end">
+            <div class="field">
+              <label>New Project Name</label>
+              <input type="text" id="add-project-name" placeholder="e.g. New Client Project" />
+            </div>
+            <div class="field">
+              <label>Weekly Off Day</label>
+              <select id="add-project-offday">
+                <option value="0">Sunday</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Group Name (optional)</label>
+              <input type="text" id="add-project-group" list="existing-groups-list" placeholder="e.g. MCGM — blank = no group" />
+            </div>
+            <button class="btn secondary small" id="add-project-btn">+ Add Project</button>
+          </div>
+          <datalist id="existing-groups-list"></datalist>
+          <div id="projects-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px"></div>
+        </div>
+
+        <div class="panel admin-only" id="manage-shift-categories-panel">
+          <div class="panel-header"><h3>Manage Shift Categories</h3></div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+            Duty hours ke hisab se category banao (jaise 12 Hrs - HK, 8 Hrs - FA, 9 Hrs - General). Half Day auto = Full Hours ka aadha, ya khud daal do.
+          </p>
+          <div class="form-row" style="align-items:flex-end">
+            <div class="field">
+              <label>Category Name</label>
+              <input type="text" id="add-shift-name" placeholder="e.g. 9 Hrs - General" />
+            </div>
+            <div class="field">
+              <label>Full Day Hours</label>
+              <input type="number" id="add-shift-full" placeholder="e.g. 9" step="0.5" min="1" />
+            </div>
+            <div class="field">
+              <label>Half Day Hours (optional)</label>
+              <input type="number" id="add-shift-half" placeholder="Auto = half of Full" step="0.5" min="0.5" />
+            </div>
+            <button class="btn secondary small" id="add-shift-btn">+ Add Category</button>
+          </div>
+          <div id="shift-categories-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px"></div>
+        </div>
+
+        <div class="panel" id="emp-select-project-panel">
+          <div class="panel-header"><h3>Select a Project</h3></div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+            Employee section ab project-wise separate hai — niche list se ek project chuno, uske employees uss project ke andar hi milenge.
+          </p>
+          <div id="emp-project-nav-list" class="proj-nav-list"></div>
+        </div>
+      </div>
+
+      <!-- STEP 2: WORKSPACE for the project picked above — fully separate Add/Bulk/List,
+           scoped to just that project (or, for the combined "MCGM" row, all 3 real MCGM
+           parts at once — with an in-page filter to still view each part on its own). -->
+      <div id="emp-workspace-view" class="hidden">
+        <div class="workspace-header">
+          <button class="btn secondary small" id="emp-workspace-back-btn">← All Projects</button>
+          <h3 id="emp-workspace-title"></h3>
+        </div>
+
+        <div class="panel admin-only" id="add-employee-panel">
+          <div class="panel-header"><h3>Add New Employee</h3></div>
+          <div class="form-row">
+            <div class="field">
+              <label>Employee ID *</label>
+              <input type="text" id="add-emp-id" placeholder="EMP001" />
+            </div>
+            <div class="field">
+              <label>Name *</label>
+              <input type="text" id="add-emp-name" placeholder="Full name" />
+            </div>
+            <div class="field">
+              <label>Designation</label>
+              <input type="text" id="add-emp-designation" placeholder="e.g. Site Supervisor" />
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <input type="text" id="add-emp-phone" placeholder="9999999999" />
+            </div>
+            <div class="field">
+              <label>Employee Location</label>
+              <input type="text" id="add-emp-location" placeholder="e.g. Mumbai Site" />
+            </div>
+            <div class="field">
+              <label>Zone</label>
+              <input type="text" id="add-emp-zone" placeholder="e.g. Zone 3" />
+            </div>
+            <div class="field">
+              <label>Ward</label>
+              <input type="text" id="add-emp-ward" placeholder="e.g. Ward K/West" />
+            </div>
+            <div class="field">
+              <label>Site Code</label>
+              <input type="text" id="add-emp-sitecode" placeholder="e.g. SITE-001" />
+            </div>
+            <div class="field">
+              <label>Project</label>
+              <select id="add-emp-project">
+                <option value="">— Select Project —</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Shift Category</label>
+              <select id="add-emp-shift">
+                <option value="">— Select —</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Date of Joining (DOJ)</label>
+              <input type="date" id="add-emp-doj" />
+            </div>
+          </div>
+          <div class="form-row" style="margin-top:6px">
+            <div class="field">
+              <label>Basic Salary (₹/month)</label>
+              <input type="number" id="add-emp-basic" placeholder="0" min="0" step="1" />
+            </div>
+            <div class="field">
+              <label>HRA (₹/month)</label>
+              <input type="number" id="add-emp-hra" placeholder="0" min="0" step="1" />
+            </div>
+            <div class="field">
+              <label>Other Allowances (₹/month)</label>
+              <input type="number" id="add-emp-allowances" placeholder="0" min="0" step="1" />
+            </div>
+            <div class="field">
+              <label>Deductions (₹/month)</label>
+              <input type="number" id="add-emp-deductions" placeholder="0" min="0" step="1" />
+            </div>
+            <div class="field">
+              <label>PF (₹/month)</label>
+              <input type="number" id="add-emp-pf" placeholder="0" min="0" step="1" />
+            </div>
+            <div class="field">
+              <label>ESIC (₹/month)</label>
+              <input type="number" id="add-emp-esic" placeholder="0" min="0" step="1" />
+            </div>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin:6px 0 0">
+            Salary fields are optional — leave blank if you'd rather set them later from the Employees list.
+          </p>
+          <button class="btn small" id="add-emp-btn" style="margin-top:10px">+ Add Employee</button>
+        </div>
+
+        <div class="panel admin-only" id="bulk-employee-panel">
+          <div class="panel-header"><h3>Bulk Add Employees</h3></div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+            Add many employees at once — upload an Excel/CSV file, or paste rows directly. Duplicate Employee IDs are skipped automatically.
+          </p>
+
+          <div class="form-row" style="align-items:flex-end">
+            <div class="field">
+              <label>Upload Excel (.xlsx) or CSV file</label>
+              <input type="file" id="bulk-emp-file" accept=".xlsx,.xls,.csv" />
+            </div>
+            <button class="btn secondary small" id="bulk-emp-upload-btn">⬆ Upload &amp; Add</button>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin:6px 0 16px">
+            Expected column headers (any order, case-insensitive): <b>Employee ID, Name, Designation, Phone, Location, DOJ, Project, Shift Category</b>. Optionally also <b>Zone, Ward, Site Code</b>, and <b>Basic Salary, HRA, Other Allowances, Deductions, PF, ESIC</b> — if included, these are only applied to newly-added employees (existing employees are never overwritten).
+            (DOJ as YYYY-MM-DD, Shift Category as exactly the category name shown in "Manage Shift Categories", e.g. "12 Hrs - HK"). Only Employee ID and Name are required.
+          </p>
+
+          <div class="field">
+            <label>Or paste rows here (one employee per line, comma-separated)</label>
+            <textarea id="bulk-emp-paste" rows="5" style="width:100%;font-family:monospace;font-size:13px"
+              placeholder="EMP101, Rahul Sharma, Site Supervisor, 9876543210, Mumbai Site, 2026-07-01, MCGM, 12 Hrs - HK, Zone 3, Ward K/West, SITE-001
+EMP102, Priya Singh, Analyst, 9876500000, Pune Site, 2026-07-05, MTDC, 8 Hrs - FA"></textarea>
+          </div>
+          <button class="btn secondary small" id="bulk-emp-paste-btn" style="margin-top:10px">+ Add Pasted Rows</button>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:6px">
+            Column order for pasted rows: Employee ID, Name, Designation, Phone, Location, DOJ, Project, Shift Category, Zone, Ward, Site Code, and optionally Basic Salary, HRA, Other Allowances, Deductions, PF, ESIC (leave later columns blank if not needed).
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3 id="employee-count">Employee List</h3>
+            <span class="mono" style="color:var(--text-muted);font-size:12px">No limit — add as many as needed</span>
+          </div>
+          <div class="filters" id="emp-workspace-subfilter" style="margin-bottom:12px"></div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr><th>Employee ID</th><th>Name</th><th>Designation</th><th>Phone</th><th>Location</th><th>Zone</th><th>Ward</th><th>Site Code</th><th>Project</th><th>Shift</th><th>DOJ</th><th>Status</th><th class="admin-only-cell">Action</th></tr>
+              </thead>
+              <tbody id="employees-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALARY SLIP REQUESTS TAB (admin, manager, coordinator — scoped to project for manager/coordinator) -->
+    <div class="tab-content hidden" id="tab-salary-requests">
+      <div class="topbar">
+        <h2>Salary Slip Requests</h2>
+        <div class="filters">
+          <select id="salary-requests-status-filter">
+            <option value="">All Statuses</option>
+            <option value="pending" selected>Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <button class="btn small" id="download-salary-requests-excel-btn">⬇ Download Report</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3 id="salary-requests-count">Requests</h3></div>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">
+          Employees raise a request here before they can view/download their salary slip for a month. Approve or reject each request — an employee can only download an approved month's slip, and only for the last 3 months.
+        </p>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Employee ID</th><th>Name</th><th>Project</th><th>Month</th><th>Status</th><th>Requested At</th><th>Reviewed By</th><th>Action</th></tr>
+            </thead>
+            <tbody id="salary-requests-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAVE REQUESTS TAB (admin, manager, coordinator — scoped to project for manager/coordinator, same as Salary Slip Requests) -->
+    <div class="tab-content hidden" id="tab-leave-requests">
+      <div class="topbar">
+        <h2>Leave Requests</h2>
+        <div class="filters">
+          <select id="leave-requests-status-filter">
+            <option value="">All Statuses</option>
+            <option value="pending" selected>Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <select id="leave-requests-project-filter">
+            <option value="">All Projects</option>
+          </select>
+          <button class="btn small" id="download-leave-requests-excel-btn">⬇ Download Report</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3 id="leave-requests-count">Requests</h3></div>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">
+          Employees apply for leave here with a date range, reason, and optional attachment. Approve or reject each request — a manager/coordinator only sees and can act on their own project's leave requests, same as Salary Slip Requests.
+        </p>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Employee ID</th><th>Name</th><th>Project</th><th>From</th><th>To</th><th>Days</th><th>Reason</th><th>Attachment</th><th>Status</th><th>Applied At</th><th>Reviewed By</th><th>Action</th></tr>
+            </thead>
+            <tbody id="leave-requests-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANAGERS TAB (admin only) -->
+    <div class="tab-content hidden" id="tab-managers">
+      <div class="topbar"><h2>Manager Accounts</h2></div>
+
+      <div class="panel" style="max-width:520px">
+        <div class="panel-header"><h3>Add New Manager</h3></div>
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="add-mgr-username" placeholder="e.g. manager1" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="add-mgr-password" placeholder="Minimum 6 characters" />
+        </div>
+        <div class="field">
+          <label>Project *</label>
+          <select id="add-mgr-project">
+            <option value="">— Select Project —</option>
+          </select>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin:2px 0 10px">
+          Ye Manager sirf isi project ka data (employees, attendance, reports) dekh payega.
+        </p>
+        <button class="btn small" id="add-mgr-btn">+ Add Manager</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3 id="manager-count">Manager List</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Username</th><th>Project</th><th>Created</th><th>Action</th></tr></thead>
+            <tbody id="managers-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="topbar" style="margin-top:24px"><h2>Report-Only Roles</h2></div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:-12px;margin-bottom:16px">
+        Area Officer, Supervisor, ya koi bhi custom role — inko sirf <b>Reports</b> tab ka access milta hai (Employees, Attendance, Managers, Settings kuch nahi dikhega). Har account ko ek Project diya jata hai, aur chaho to us Project ke andar Zone/Ward/Location se aur bhi narrow (divide) kar sakte ho.
+      </p>
+
+      <div class="panel" style="max-width:520px">
+        <div class="panel-header"><h3>Manage Roles</h3></div>
+        <p style="font-size:12px;color:var(--text-muted);margin:2px 0 10px">
+          Pehle yahan role ka naam add karo (e.g. Area Officer, Supervisor), phir neeche uss role ke accounts banao.
+        </p>
+        <div class="form-row" style="align-items:flex-end">
+          <div class="field">
+            <label>New Role Name</label>
+            <input type="text" id="add-role-type-name" placeholder="e.g. Area Officer" />
+          </div>
+          <button class="btn secondary small" id="add-role-type-btn">+ Add Role</button>
+        </div>
+        <div id="role-types-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+
+      <div class="panel" style="max-width:560px">
+        <div class="panel-header"><h3>Add New Role Account</h3></div>
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="add-role-username" placeholder="e.g. area.officer1" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="add-role-password" placeholder="Minimum 6 characters" />
+        </div>
+        <div class="field">
+          <label>Role *</label>
+          <select id="add-role-name">
+            <option value="">— Select Role —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Project *</label>
+          <select id="add-role-project">
+            <option value="">— Select Project —</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Zone (optional)</label>
+            <input type="text" id="add-role-zone" placeholder="Blank = whole project" />
+          </div>
+          <div class="field">
+            <label>Ward (optional)</label>
+            <input type="text" id="add-role-ward" placeholder="Blank = whole project" />
+          </div>
+          <div class="field">
+            <label>Location (optional)</label>
+            <input type="text" id="add-role-location" placeholder="Blank = whole project" />
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin:2px 0 10px">
+          Zone/Ward/Location khaali chhodo to is Project ke saare employees ka data reports mein dikhega. Value daalo (comma se multiple bhi de sakte ho, e.g. "Ward A, Ward B") to sirf usi Zone/Ward/Location ke employees ka data dikhega.
+        </p>
+        <button class="btn small" id="add-role-account-btn">+ Add Role Account</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3 id="role-account-count">Role Account List</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Username</th><th>Role</th><th>Project</th><th>Zone</th><th>Ward</th><th>Location</th><th>Created</th><th>Action</th></tr></thead>
+            <tbody id="role-accounts-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- COORDINATORS TAB (admin only) -->
+    <div class="tab-content hidden" id="tab-coordinators">
+      <div class="topbar"><h2>Coordinator Accounts</h2></div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:-12px;margin-bottom:16px">
+        Coordinator accounts have the same access level as Manager (view attendance records &amp; download reports) — just a separate branded login.
+      </p>
+
+      <div class="panel" style="max-width:520px">
+        <div class="panel-header"><h3>Add New Coordinator Account</h3></div>
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="add-coordinator-username" placeholder="e.g. coordinator1" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="add-coordinator-password" placeholder="Minimum 6 characters" />
+        </div>
+        <div class="field">
+          <label>Project *</label>
+          <select id="add-coordinator-project">
+            <option value="">— Select Project —</option>
+          </select>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin:2px 0 10px">
+          Ye Coordinator sirf isi project ka data (employees, attendance, reports) dekh payega.
+        </p>
+        <button class="btn small" id="add-coordinator-btn">+ Add Coordinator Account</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3 id="coordinator-count">Coordinator Account List</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Username</th><th>Project</th><th>Created</th><th>Action</th></tr></thead>
+            <tbody id="coordinator-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT ROLE ACCOUNT MODAL (admin only) -->
+    <div id="edit-role-account-modal" class="hidden">
+      <div class="edit-emp-box">
+        <h3>Edit Role Account</h3>
+        <input type="hidden" id="edit-role-account-id" />
+        <div class="form-row">
+          <div class="field">
+            <label>Username</label>
+            <input type="text" id="edit-role-account-username" />
+          </div>
+          <div class="field">
+            <label>Role *</label>
+            <select id="edit-role-account-role">
+              <option value="">— Select Role —</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Project *</label>
+            <select id="edit-role-account-project">
+              <option value="">— Select Project —</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>New Password (optional)</label>
+            <input type="password" id="edit-role-account-password" placeholder="Leave blank to keep current password" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Zone (optional)</label>
+            <input type="text" id="edit-role-account-zone" placeholder="Blank = whole project" />
+          </div>
+          <div class="field">
+            <label>Ward (optional)</label>
+            <input type="text" id="edit-role-account-ward" placeholder="Blank = whole project" />
+          </div>
+          <div class="field">
+            <label>Location (optional)</label>
+            <input type="text" id="edit-role-account-location" placeholder="Blank = whole project" />
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:6px;justify-content:flex-end">
+          <button class="btn secondary small" id="edit-role-account-cancel-btn">Cancel</button>
+          <button class="btn small" id="edit-role-account-save-btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT PROJECT MODAL (admin only) -->
+    <div id="edit-project-modal" class="hidden">
+      <div class="edit-emp-box">
+        <h3>Edit Project</h3>
+        <input type="hidden" id="edit-project-id" />
+        <div class="form-row">
+          <div class="field">
+            <label>Project Name</label>
+            <input type="text" id="edit-project-name" />
+          </div>
+          <div class="field">
+            <label>Weekly Off Day</label>
+            <select id="edit-project-offday">
+              <option value="0">Sunday</option>
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Group Name</label>
+            <input type="text" id="edit-project-group" list="existing-groups-list" placeholder="e.g. MCGM — leave blank to ungroup" />
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin:2px 0 0">
+          Isi Group Name wale doosre projects ke saath combine ho jayega. Field khaali karke Save karo to is project ko ungroup kar do.
+        </p>
+        <div class="form-row" style="margin-top:6px;justify-content:flex-end">
+          <button class="btn secondary small" id="edit-project-cancel-btn">Cancel</button>
+          <button class="btn small" id="edit-project-save-btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT MANAGER/COORDINATOR ACCOUNT MODAL (admin only) -->
+    <div id="edit-mgr-modal" class="hidden">
+      <div class="edit-emp-box">
+        <h3 id="edit-mgr-title">Edit Account</h3>
+        <input type="hidden" id="edit-mgr-id" />
+        <input type="hidden" id="edit-mgr-type" />
+        <div class="form-row">
+          <div class="field">
+            <label>Username</label>
+            <input type="text" id="edit-mgr-username" />
+          </div>
+          <div class="field">
+            <label>Project *</label>
+            <select id="edit-mgr-project">
+              <option value="">— Select Project —</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>New Password (optional)</label>
+            <input type="password" id="edit-mgr-password" placeholder="Leave blank to keep current password" />
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:6px;justify-content:flex-end">
+          <button class="btn secondary small" id="edit-mgr-cancel-btn">Cancel</button>
+          <button class="btn small" id="edit-mgr-save-btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB (admin only) -->
+    <div class="tab-content hidden" id="tab-settings">
+      <div class="topbar"><h2>Settings</h2></div>
+      <div class="panel" style="max-width:420px">
+        <div class="panel-header"><h3>Change Admin Password</h3></div>
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="new-password" placeholder="Minimum 6 characters" />
+        </div>
+        <button class="btn small" id="change-password-btn">Update Password</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= LOGGED OUT VIEW ================= -->
+<div id="logged-out-view" class="hidden auth-view">
+  <div class="auth-bg"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span><span class="grid-overlay"></span><div class="logo-3d-stage"><img src="/img/krystal-logo.svg" class="logo-3d" alt="" aria-hidden="true" /></div></div>
+  <div class="login-card fade-in-up" style="text-align:center">
+    <div class="brand-mark center logo-entrance">
+      <img src="/img/krystal-logo.svg" alt="Krystal Logo" class="brand-logo" />
+      <div>
+        <div class="name">Krystal Connect</div>
+        <div class="sub">Krystal Connect · Geo-Attendance Web App</div>
+      </div>
+    </div>
+    <h1>You have been logged out ✅</h1>
+    <p class="desc">For security, please close this browser tab/window now.</p>
+    <button class="btn" id="close-tab-btn" style="margin-top:16px"><span>Close This Tab</span></button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<div id="photo-modal" class="hidden">
+  <img id="photo-modal-img" src="" />
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
