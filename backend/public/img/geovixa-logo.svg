@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 190" width="200" height="190">
+  <defs>
+    <linearGradient id="gGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2FD9C0"/>
+      <stop offset="55%" stop-color="#2C8FE0"/>
+      <stop offset="100%" stop-color="#5C3FE0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Hexagon outline (geo / map cell motif), thick stroke stays legible at small icon sizes -->
+  <path d="M56 10 L144 10 L186 83 L144 156 L56 156 L14 83 Z"
+        fill="none" stroke="url(#gGrad)" stroke-width="15"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Solid accent band at the base -->
+  <rect x="26" y="146" width="148" height="14" rx="7" fill="url(#gGrad)"/>
+
+  <!-- Bold "G" letterform: ring with a gap + inward bar -->
+  <g fill="none" stroke="#EAF6FD" stroke-width="15" stroke-linecap="round">
+    <path d="M127.85 107.5 A34 34 0 1 1 127.85 68.5"/>
+  </g>
+  <rect x="100" y="81" width="38" height="14" rx="3" fill="#EAF6FD"/>
+
+  <!-- Location-pin dot accent, ties the mark to GPS-based attendance -->
+  <circle cx="100" cy="88" r="6" fill="url(#gGrad)"/>
+</svg>
