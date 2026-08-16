@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Geovixa — Unified UI (Light/Dark)</title>
+<style>
+  :root{
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:10px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  /* ===== LIGHT THEME TOKENS ===== */
+  [data-theme="light"]{
+    --bg:#F6F8FC;
+    --card:#FFFFFF;
+    --card-2:#F0F3FA;
+    --text:#0B1220;
+    --text-dim:#6B7686;
+    --border:#E6EAF2;
+    --primary:#146EF5;
+    --primary-grad: linear-gradient(135deg,#1E88F5,#146EF5);
+    --success:#0FBE6B;
+    --danger:#F0473C;
+    --warn:#F5A623;
+    --shadow: 0 8px 24px rgba(20,110,245,0.08);
+    --nav-bg:#FFFFFF;
+    --pill-bg:#EEF3FC;
+  }
+
+  /* ===== DARK THEME TOKENS ===== */
+  [data-theme="dark"]{
+    --bg:#07111F;
+    --card:#0D1B2D;
+    --card-2:#0F2035;
+    --text:#EAF1FB;
+    --text-dim:#7C90AC;
+    --border:#16283F;
+    --primary:#146EF5;
+    --primary-grad: linear-gradient(135deg,#2F8CFF,#146EF5);
+    --success:#00D084;
+    --danger:#FF5A52;
+    --warn:#FFB547;
+    --shadow: 0 10px 30px rgba(0,0,0,0.45);
+    --nav-bg:#0B1728;
+    --pill-bg:#12233A;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:var(--font);
+    background:radial-gradient(circle at 30% 0%, #eef2fa, #dfe6f2);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:32px 16px;
+    min-height:100vh;
+  }
+  [data-page-theme="dark"] body{
+    background:radial-gradient(circle at 30% 0%, #0a1729, #050b14);
+  }
+
+  .rig{
+    display:flex;
+    gap:24px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  .controls{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-bottom:8px;
+  }
+  .toggle-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#111a2b;
+    color:#fff;
+    padding:8px 16px;
+    border-radius:999px;
+    font-family:var(--font);
+    font-size:13px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+  }
+  .toggle-wrap button{
+    all:unset;
+    cursor:pointer;
+    padding:6px 12px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:12px;
+    transition:.2s;
+  }
+  .toggle-wrap button.active{
+    background:#146EF5;
+  }
+
+  .phone{
+    width:340px;
+    height:700px;
+    background:var(--bg);
+    border-radius:36px;
+    border:8px solid #111;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    color:var(--text);
+    transition:background .25s ease, color .25s ease;
+  }
+  .status-bar{
+    height:26px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    font-size:11px;
+    font-weight:600;
+    color:var(--text-dim);
+    flex-shrink:0;
+  }
+
+  .screen{
+    flex:1;
+    overflow-y:auto;
+    padding:14px 16px 10px;
+    display:none;
+    flex-direction:column;
+    gap:14px;
+    scrollbar-width:none;
+  }
+  .screen.active{display:flex;}
+  .screen::-webkit-scrollbar{display:none;}
+
+  /* Header */
+  .app-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .logo-dot{
+    width:30px;height:30px;border-radius:9px;
+    background:var(--primary-grad);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:800;font-size:13px;
+  }
+  .brand-text .title{font-weight:800;font-size:14px;letter-spacing:.3px;}
+  .brand-text .sub{font-size:9px;color:var(--text-dim);letter-spacing:.5px;text-transform:uppercase;}
+  .bell{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--card);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;font-size:15px;
+  }
+  .bell .dot{
+    position:absolute;top:4px;right:5px;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--danger);border:2px solid var(--bg);
+  }
+
+  .greet{font-size:12px;color:var(--text-dim);}
+  .greet strong{display:block;font-size:19px;color:var(--text);font-weight:800;margin-top:2px;}
+
+  /* Duty Card */
+  .duty-card{
+    background:var(--primary-grad);
+    border-radius:var(--radius-lg);
+    padding:18px 20px;
+    color:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .duty-card::after{
+    content:"";
+    position:absolute;
+    right:-30px;top:-30px;
+    width:120px;height:120px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+  }
+  .duty-left{position:relative;z-index:1;}
+  .duty-left .badge{
+    display:inline-flex;align-items:center;gap:5px;
+    background:rgba(255,255,255,0.18);
+    padding:4px 10px;border-radius:999px;
+    font-size:11px;font-weight:700;
+  }
+  .duty-left .badge::before{content:"●";color:#4BFFB0;font-size:9px;}
+  .duty-left .since{font-size:11px;opacity:.85;margin-top:9px;}
+  .duty-left .link{
+    margin-top:16px;font-size:12px;font-weight:700;
+    display:flex;align-items:center;gap:4px;
+  }
+  .ring{
+    width:74px;height:74px;border-radius:50%;
+    background:conic-gradient(#fff 78%, rgba(255,255,255,0.28) 0);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    position:relative;
+    z-index:1;
+  }
+  .ring-inner{
+    width:60px;height:60px;border-radius:50%;
+    background:var(--primary);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;
+    line-height:1.15;
+    text-align:center;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);
+  }
+  .ring-inner span{font-size:8.5px;font-weight:600;opacity:.8;margin-top:1px;}
+
+  .section-label{
+    font-size:11px;font-weight:800;color:var(--text-dim);
+    text-transform:uppercase;letter-spacing:.6px;margin-bottom:-4px;
+  }
+
+  .qa-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+  }
+  .qa-item{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:12px 4px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    font-size:10px;font-weight:600;color:var(--text);
+  }
+  .qa-icon{
+    width:32px;height:32px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:#fff;
+  }
+
+  .summary-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-md);padding:14px 16px;
+    display:flex;justify-content:space-between;
+  }
+  .summary-card .item{text-align:left;}
+  .summary-card .item .num{font-weight:800;font-size:15px;}
+  .summary-card .item .lab{font-size:10px;color:var(--text-dim);margin-top:2px;}
+
+  /* Attendance ring big */
+  .big-ring{
+    width:190px;height:190px;border-radius:50%;
+    margin:6px auto;
+    background:conic-gradient(var(--success) 68%, var(--pill-bg) 0);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .big-ring-inner{
+    width:158px;height:158px;border-radius:50%;
+    background:var(--card);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);
+  }
+  .big-ring-inner .status{font-size:11px;font-weight:800;color:var(--success);letter-spacing:.5px;}
+  .big-ring-inner .since{font-size:10px;color:var(--text-dim);margin-top:2px;}
+  .big-ring-inner .dur{font-size:24px;font-weight:800;margin-top:6px;}
+
+  .punch-row{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;font-weight:600;
+  }
+  .punch-row .l{display:flex;align-items:center;gap:8px;color:var(--text-dim);}
+  .punch-row .dotgreen{width:8px;height:8px;border-radius:50%;background:var(--success);}
+  .punch-row .dotgrey{width:8px;height:8px;border-radius:50%;border:2px solid var(--text-dim);}
+
+  .btn-primary{
+    background:var(--primary-grad);
+    color:#fff;border:none;border-radius:var(--radius-md);
+    padding:14px;font-size:13px;font-weight:800;letter-spacing:.4px;
+    text-align:center;box-shadow:var(--shadow);cursor:pointer;
+  }
+  .btn-danger{
+    background:linear-gradient(135deg,#FF7A59,#F0473C);
+  }
+
+  .list-link{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:13px 14px;font-size:12px;font-weight:700;
+    color:var(--text);
+  }
+  .list-link .chev{color:var(--text-dim);}
+
+  /* Profile */
+  .profile-hero{
+    background:var(--primary-grad);
+    border-radius:var(--radius-lg);
+    padding:20px;color:#fff;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+  }
+  .avatar{
+    width:56px;height:56px;border-radius:50%;
+    background:rgba(255,255,255,0.25);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:18px;
+  }
+  .profile-hero .name{font-weight:800;font-size:15px;}
+  .profile-hero .id{font-size:11px;opacity:.85;}
+  .profile-hero .status{
+    margin-top:4px;font-size:10px;font-weight:700;
+    background:rgba(255,255,255,0.18);padding:3px 10px;border-radius:999px;
+  }
+
+  .menu-list{display:flex;flex-direction:column;gap:8px;}
+  .menu-item{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 4px;border-bottom:1px solid var(--border);
+    font-size:12.5px;font-weight:600;
+  }
+  .menu-item .l{display:flex;align-items:center;gap:10px;}
+  .menu-item .ic{
+    width:26px;height:26px;border-radius:7px;background:var(--pill-bg);
+    display:flex;align-items:center;justify-content:center;font-size:12px;
+  }
+  .logout{color:var(--danger);}
+
+  /* Bottom nav */
+  .bottom-nav{
+    height:64px;flex-shrink:0;
+    background:var(--nav-bg);
+    border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-around;
+  }
+  .nav-item{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    font-size:9.5px;font-weight:700;color:var(--text-dim);
+    cursor:pointer;
+  }
+  .nav-item .ic{font-size:17px;}
+  .nav-item.active{color:var(--primary);}
+  .nav-item.active .indicator{
+    width:16px;height:3px;border-radius:3px;background:var(--primary);margin-top:-2px;
+  }
+  .nav-item .indicator{height:3px;margin-top:-2px;}
+
+  .sub-header{
+    display:flex;align-items:center;gap:12px;
+  }
+  .back-btn{
+    width:30px;height:30px;border-radius:50%;
+    background:var(--card);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;cursor:pointer;flex-shrink:0;
+  }
+  .sub-header .title{font-weight:800;font-size:15px;flex:1;}
+
+  .tabpill-row{display:flex;gap:8px;}
+  .tabpill{
+    flex:1;text-align:center;padding:8px 0;border-radius:999px;
+    font-size:11px;font-weight:700;
+    background:var(--card);border:1px solid var(--border);color:var(--text-dim);
+  }
+  .tabpill.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+  .step-row{display:flex;justify-content:space-between;align-items:center;padding:0 6px;}
+  .step{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:9.5px;font-weight:700;color:var(--text-dim);}
+  .step .num{
+    width:24px;height:24px;border-radius:50%;
+    background:var(--pill-bg);color:var(--text-dim);
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;
+  }
+  .step.done .num{background:var(--success);color:#fff;}
+  .step.active .num{background:var(--primary);color:#fff;}
+  .step-line{flex:1;height:2px;background:var(--border);margin:0 4px;margin-bottom:16px;}
+
+  .map-mini{
+    height:170px;border-radius:var(--radius-lg);position:relative;overflow:hidden;
+    background:
+      repeating-linear-gradient(0deg, var(--card-2) 0 1px, transparent 1px 30px),
+      repeating-linear-gradient(90deg, var(--card-2) 0 1px, transparent 1px 30px),
+      var(--bg);
+    border:1px solid var(--border);
+  }
+  .map-mini .zone{
+    position:absolute;top:50%;left:50%;width:90px;height:90px;
+    border-radius:50%;background:rgba(15,190,107,0.15);border:2px solid var(--success);
+    transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;
+  }
+  .map-mini .zone .core{width:16px;height:16px;border-radius:50%;background:var(--primary);border:3px solid #fff;box-shadow:0 0 0 4px rgba(20,110,245,0.25);}
+
+  .info-banner{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(15,190,107,0.1);color:var(--success);
+    padding:10px 12px;border-radius:var(--radius-sm);font-size:11px;font-weight:700;
+  }
+  .info-banner .sub{display:block;color:var(--text-dim);font-weight:600;font-size:10px;margin-top:1px;}
+
+  .selfie-box{
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-lg);padding:22px;
+  }
+  .selfie-circle{
+    width:96px;height:96px;border-radius:50%;
+    background:var(--pill-bg);
+    display:flex;align-items:center;justify-content:center;font-size:34px;
+    border:3px dashed var(--border);
+  }
+
+  .confirm-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 2px;border-bottom:1px solid var(--border);
+    font-size:12px;font-weight:700;
+  }
+  .confirm-row .ok{color:var(--success);font-weight:800;}
+
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-size:10.5px;font-weight:700;color:var(--text-dim);}
+  .field .box{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:11px 12px;font-size:12.5px;font-weight:600;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+
+  .leave-item{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:12px 14px;
+  }
+  .leave-item .top{display:flex;justify-content:space-between;font-size:12px;font-weight:700;}
+  .leave-item .sub{font-size:10.5px;color:var(--text-dim);margin-top:3px;}
+  .status-chip{
+    font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:999px;
+    background:rgba(15,190,107,0.12);color:var(--success);
+  }
+
+  .salary-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-lg);padding:16px;
+  }
+  .salary-row{display:flex;justify-content:space-between;font-size:12px;font-weight:600;padding:6px 0;color:var(--text-dim);}
+  .salary-row.net{
+    border-top:1px solid var(--border);margin-top:6px;padding-top:10px;
+    font-size:15px;font-weight:800;color:var(--text);
+  }
+  .salary-hist-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;padding:9px 2px;border-bottom:1px solid var(--border);}
+  .salary-hist-item .sub{font-size:10px;color:var(--text-dim);font-weight:600;}
+
+  .notif-card{
+    display:flex;gap:10px;background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:12px;
+  }
+  .notif-ic{
+    width:32px;height:32px;border-radius:9px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;
+  }
+  .notif-card .h{font-size:12px;font-weight:800;}
+  .notif-card .d{font-size:11px;color:var(--text-dim);margin-top:2px;line-height:1.35;}
+  .notif-card .t{font-size:9.5px;color:var(--text-dim);margin-top:6px;font-weight:600;}
+
+  .sos-circle{
+    width:150px;height:150px;border-radius:50%;
+    margin:16px auto 4px;
+    background:radial-gradient(circle at 35% 30%, #FF7A6E, #F0473C 70%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#fff;font-weight:900;font-size:22px;letter-spacing:1px;
+    box-shadow:0 0 0 10px rgba(240,71,60,0.12), 0 0 0 22px rgba(240,71,60,0.06);
+  }
+  .sos-circle span{font-size:26px;}
+  .sos-note{text-align:center;font-size:11.5px;color:var(--text-dim);font-weight:600;line-height:1.5;}
+  .contact-row{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;font-weight:700;
+  }
+</style>
+</head>
+<body data-page-theme="light">
+
+<div class="rig">
+  <div class="controls">
+    <div class="toggle-wrap">
+      <span>Theme system</span>
+      <button id="btnLight" class="active" onclick="setTheme('light')">Light</button>
+      <button id="btnDark" onclick="setTheme('dark')">Dark</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="phone" data-theme="light" id="phone">
+      <div class="status-bar"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+
+      <!-- LOGIN -->
+      <div class="screen active" data-screen="login">
+        <div style="display:flex;flex-direction:column;align-items:center;margin-top:40px;gap:6px;">
+          <div class="logo-dot" style="width:52px;height:52px;border-radius:16px;font-size:22px;">G</div>
+          <div style="font-weight:800;font-size:18px;margin-top:6px;">GEOVIXA</div>
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;">Employee Login</div>
+        </div>
+        <div class="field"><label>Company Code</label><input id="loginCompanyCode" placeholder="e.g. GVX2026" class="box" style="width:100%;border:1px solid var(--border);background:var(--card);color:var(--text);text-transform:uppercase;"/></div>
+        <div class="field"><label>Employee ID</label><input id="loginEmpId" placeholder="e.g. 1024" class="box" style="width:100%;border:1px solid var(--border);background:var(--card);color:var(--text);"/></div>
+        <div class="field"><label>PIN (if set)</label><input id="loginPin" type="password" placeholder="Leave blank if none" class="box" style="width:100%;border:1px solid var(--border);background:var(--card);color:var(--text);"/></div>
+        <div class="btn-primary" style="text-align:center;" onclick="doLogin()">LOGIN</div>
+        <div id="loginMsg" style="text-align:center;color:var(--danger);font-size:11.5px;font-weight:700;"></div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="screen" data-screen="dashboard">
+        <div class="app-header">
+          <div class="brand">
+            <div class="logo-dot">G</div>
+            <div class="brand-text">
+              <div class="title">GEOVIXA</div>
+              <div class="sub">Workforce. Anywhere.</div>
+            </div>
+          </div>
+          <div class="bell" onclick="setScreen('notifications')">🔔<div class="dot"></div></div>
+        </div>
+
+        <div class="greet">Good Morning,<strong id="greetName">—</strong></div>
+
+        <div class="duty-card">
+          <div class="duty-left">
+            <div class="badge" id="dutyBadge">OFF DUTY</div>
+            <div class="since" id="dutySince">Not punched in today</div>
+            <div class="link" onclick="setScreen('attendance')">View Timeline →</div>
+          </div>
+          <div class="ring"><div class="ring-inner" id="dutyRing">00:00<span>HRS</span></div></div>
+        </div>
+
+        <div class="section-label">Quick Actions</div>
+        <div class="qa-grid">
+          <div class="qa-item" onclick="openPunchFlow()"><div class="qa-icon" style="background:#146EF5;">⏱</div>Punch</div>
+          <div class="qa-item" onclick="setScreen('attendance')"><div class="qa-icon" style="background:#0FBE6B;">📅</div>Attend.</div>
+          <div class="qa-item" onclick="setScreen('leave')"><div class="qa-icon" style="background:#F5A623;">🏖</div>Leave</div>
+          <div class="qa-item" onclick="setScreen('salary')"><div class="qa-icon" style="background:#8A5CF6;">⏳</div>OT</div>
+          <div class="qa-item" onclick="setScreen('salary')"><div class="qa-icon" style="background:#146EF5;">💰</div>Salary</div>
+          <div class="qa-item" onclick="setScreen('profile')"><div class="qa-icon" style="background:#0FBE6B;">👷</div>Reliever</div>
+          <div class="qa-item" onclick="setScreen('sos')"><div class="qa-icon" style="background:#F0473C;">🚨</div>SOS</div>
+          <div class="qa-item" onclick="setScreen('profile')"><div class="qa-icon" style="background:#6B7686;">⋯</div>More</div>
+        </div>
+
+        <div class="section-label">Today's Summary</div>
+        <div class="summary-card">
+          <div class="item"><div class="num" id="sumHours">0h 0m</div><div class="lab">On Duty</div></div>
+          <div class="item"><div class="num" id="sumStatus">—</div><div class="lab">Status</div></div>
+          <div class="item"><div class="num" id="sumEdits">0</div><div class="lab">Punches</div></div>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="screen" data-screen="attendance">
+        <div class="app-header">
+          <div class="brand-text"><div class="title">Attendance</div></div>
+          <div class="bell" onclick="loadDashboard()">🔄</div>
+        </div>
+        <div class="big-ring">
+          <div class="big-ring-inner">
+            <div class="status" id="attStatus">OFF DUTY</div>
+            <div class="since" id="attSince">Not punched in</div>
+            <div class="dur" id="attDur">00:00</div>
+          </div>
+        </div>
+        <div class="punch-row">
+          <div class="l"><div class="dotgreen"></div>PUNCH IN</div>
+          <div id="attPunchInTime">--:--</div>
+        </div>
+        <div class="punch-row">
+          <div class="l"><div class="dotgrey"></div>PUNCH OUT</div>
+          <div id="attPunchOutTime">--:--</div>
+        </div>
+        <div class="btn-primary" id="attActionBtn" onclick="openPunchFlow()">PUNCH IN</div>
+        <div class="section-label">Recent History</div>
+        <div id="attHistoryList"></div>
+      </div>
+
+      <!-- PUNCH IN/OUT FLOW -->
+      <div class="screen" data-screen="punchin">
+        <div class="sub-header">
+          <div class="back-btn" onclick="cancelPunchFlow()">←</div>
+          <div class="title" id="punchTitle">Punch In</div>
+        </div>
+        <div class="step-row">
+          <div class="step done" id="stepLoc"><div class="num">✓</div>Location</div>
+          <div class="step-line"></div>
+          <div class="step active" id="stepSelfie"><div class="num">2</div>Selfie</div>
+          <div class="step-line"></div>
+          <div class="step" id="stepConfirm"><div class="num">3</div>Confirm</div>
+        </div>
+
+        <div id="locBanner" class="info-banner" style="background:var(--pill-bg);color:var(--text-dim);">📍 Getting your location…</div>
+
+        <div class="section-label">Take Selfie</div>
+        <div class="selfie-box" id="selfieBox">
+          <video id="camVideo" autoplay playsinline style="width:100%;border-radius:12px;background:#000;display:none;max-height:180px;object-fit:cover;"></video>
+          <img id="selfiePreview" style="display:none;width:96px;height:96px;border-radius:50%;object-fit:cover;" />
+          <div class="selfie-circle" id="selfiePlaceholder">🧑</div>
+          <canvas id="camCanvas" style="display:none;"></canvas>
+          <div class="btn-primary" id="camBtn" style="width:100%;text-align:center;" onclick="handleCameraButton()">📷 OPEN CAMERA</div>
+        </div>
+
+        <div id="confirmSection" style="display:none;">
+          <div class="section-label">Confirm</div>
+          <div class="confirm-row">Location <span class="ok">✓</span></div>
+          <div class="confirm-row">Selfie <span class="ok">✓</span></div>
+          <div class="confirm-row">Time <span class="ok" id="confirmTime">✓</span></div>
+          <div class="btn-primary" id="submitPunchBtn" style="text-align:center;margin-top:10px;" onclick="submitPunch()">CONFIRM PUNCH IN</div>
+        </div>
+        <div id="punchError" style="color:var(--danger);font-size:11.5px;font-weight:700;"></div>
+      </div>
+
+      <!-- LEAVE -->
+      <div class="screen" data-screen="leave">
+        <div class="sub-header">
+          <div class="back-btn" onclick="goHome()">←</div>
+          <div class="title">Apply for Leave</div>
+        </div>
+
+        <div class="field"><label>From Date</label><input type="date" id="leaveFrom" class="box" style="width:100%;border:1px solid var(--border);background:var(--card);color:var(--text);"/></div>
+        <div class="field"><label>To Date</label><input type="date" id="leaveTo" class="box" style="width:100%;border:1px solid var(--border);background:var(--card);color:var(--text);"/></div>
+        <div class="field"><label>Reason</label><input type="text" id="leaveReason" placeholder="Family function" class="box" style="width:100%;border:1px solid var(--border);background:var(--card);color:var(--text);"/></div>
+        <div class="btn-primary" style="text-align:center;" onclick="submitLeave()">SUBMIT APPLICATION</div>
+        <div id="leaveMsg" style="font-size:11px;font-weight:700;"></div>
+
+        <div class="section-label">My Leaves</div>
+        <div id="leaveList"></div>
+      </div>
+
+      <!-- SALARY -->
+      <div class="screen" data-screen="salary">
+        <div class="sub-header">
+          <div class="back-btn" onclick="goHome()">←</div>
+          <div class="title">Salary Slip</div>
+        </div>
+        <div class="tabpill-row" id="salaryMonthTabs"></div>
+
+        <div class="salary-card" id="salarySlipCard" style="display:none;">
+          <div class="section-label" style="margin-bottom:6px;">Salary Overview</div>
+          <div class="salary-row"><span>Basic Pay</span><span id="salBasic">₹0</span></div>
+          <div class="salary-row"><span>HRA</span><span id="salHra">₹0</span></div>
+          <div class="salary-row"><span>Other Allowances</span><span id="salAllow">₹0</span></div>
+          <div class="salary-row"><span>Deductions</span><span id="salDeduct">−₹0</span></div>
+          <div class="salary-row net"><span>NET PAY</span><span id="salNet">₹0</span></div>
+        </div>
+        <div id="salaryMsg" style="font-size:11.5px;font-weight:700;color:var(--text-dim);"></div>
+
+        <div class="section-label">My Requests</div>
+        <div id="salaryRequestList"></div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="screen" data-screen="notifications">
+        <div class="sub-header">
+          <div class="back-btn" onclick="goHome()">←</div>
+          <div class="title">Notifications</div>
+          <div class="bell" style="width:30px;height:30px;" onclick="loadNotifications()">🔄</div>
+        </div>
+        <div id="notifList"></div>
+      </div>
+
+      <!-- SOS -->
+      <div class="screen" data-screen="sos">
+        <div class="sub-header">
+          <div class="back-btn" onclick="goHome()">←</div>
+          <div class="title">SOS Emergency</div>
+        </div>
+        <div class="sos-circle" id="sosBtn" onclick="sendSOS()">🚨<span>SOS</span></div>
+        <div class="sos-note">Tap to send SOS<br>Alert will be sent to your manager and admin immediately.</div>
+        <div id="sosMsg" style="text-align:center;font-size:11.5px;font-weight:700;"></div>
+      </div>
+
+      <!-- MORE / PROFILE -->
+      <div class="screen" data-screen="profile">
+        <div class="profile-hero">
+          <div class="avatar" id="profAvatar">--</div>
+          <div class="name" id="profName">—</div>
+          <div class="id" id="profId">Employee ID: —</div>
+          <div class="status" id="profStatus">🔴 OFF DUTY</div>
+        </div>
+        <div class="menu-list">
+          <div class="menu-item"><div class="l"><div class="ic">🕐</div>Attendance History</div>›</div>
+          <div class="menu-item" onclick="setScreen('salary')"><div class="l"><div class="ic">💰</div>Salary Slip</div>›</div>
+          <div class="menu-item" onclick="setScreen('leave')"><div class="l"><div class="ic">🏖</div>My Leave</div>›</div>
+          <div class="menu-item" onclick="setScreen('notifications')"><div class="l"><div class="ic">📢</div>Announcements</div>›</div>
+          <div class="menu-item" onclick="setScreen('sos')"><div class="l"><div class="ic">🚨</div>SOS</div>›</div>
+          <div class="menu-item"><div class="l"><div class="ic">🌗</div>Theme</div>
+            <span style="display:flex;gap:6px;">
+              <span onclick="setTheme('light')" style="cursor:pointer;">☀️</span>
+              <span onclick="setTheme('dark')" style="cursor:pointer;">🌙</span>
+            </span>
+          </div>
+          <div class="menu-item logout" onclick="doLogout()"><div class="l"><div class="ic">🚪</div>Logout</div></div>
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item active" onclick="setScreen('dashboard', this)"><div class="ic">🏠</div>Home<div class="indicator"></div></div>
+        <div class="nav-item" onclick="setScreen('attendance', this)"><div class="ic">🕐</div>Attend.<div class="indicator"></div></div>
+        <div class="nav-item" onclick="setScreen('notifications', this)"><div class="ic">🔔</div>Alerts<div class="indicator"></div></div>
+        <div class="nav-item" onclick="setScreen('profile', this)"><div class="ic">⋯</div>More<div class="indicator"></div></div>
+      </div>
+    </div>
+    <div class="caption">One component system · same layout · theme tokens swap</div>
+  </div>
+</div>
+
+<script>
+// =====================================================================================
+// CONFIG / API HELPER
+// =====================================================================================
+const API = '/api'; // served from the same origin as the backend (geovixa.onrender.com)
+
+function getToken(){ return sessionStorage.getItem('geovixa_token'); }
+function getEmployee(){ try { return JSON.parse(sessionStorage.getItem('geovixa_employee')||'null'); } catch(e){ return null; } }
+function saveSession(token, employee, companyName){
+  sessionStorage.setItem('geovixa_token', token);
+  sessionStorage.setItem('geovixa_employee', JSON.stringify(employee));
+  sessionStorage.setItem('geovixa_company_name', companyName || '');
+}
+function clearSession(){ sessionStorage.clear(); }
+
+async function apiFetch(path, options={}){
+  const headers = options.headers || {};
+  const token = getToken();
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  if (options.body && typeof options.body !== 'string') options.body = JSON.stringify(options.body);
+  if (options.body) headers['Content-Type'] = 'application/json';
+  const res = await fetch(API + path, { ...options, headers });
+  if (res.status === 401) { clearSession(); setScreen('login'); throw new Error('Session expired, please login again'); }
+  const data = await res.json().catch(()=>({}));
+  if (!res.ok) throw new Error(data.error || 'Something went wrong');
+  return data;
+}
+
+// =====================================================================================
+// THEME + SCREEN NAV
+// =====================================================================================
+function setTheme(mode){
+  document.getElementById('phone').setAttribute('data-theme', mode);
+  document.body.setAttribute('data-page-theme', mode);
+  document.getElementById('btnLight').classList.toggle('active', mode==='light');
+  document.getElementById('btnDark').classList.toggle('active', mode==='dark');
+}
+function setScreen(name, el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelector('.screen[data-screen="'+name+'"]').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const navMap = {dashboard:0, attendance:1, notifications:2, profile:3};
+  if(el){ el.classList.add('active'); }
+  else if(navMap.hasOwnProperty(name)){
+    document.querySelectorAll('.nav-item')[navMap[name]].classList.add('active');
+  }
+  document.querySelector('.bottom-nav').style.display = (name==='login') ? 'none' : 'flex';
+  if (name === 'leave') loadLeave();
+  if (name === 'salary') loadSalary();
+  if (name === 'notifications') loadNotifications();
+}
+function goHome(){ setScreen('dashboard'); loadDashboard(); }
+
+// =====================================================================================
+// LOGIN
+// =====================================================================================
+async function doLogin(){
+  const company_code = document.getElementById('loginCompanyCode').value.trim();
+  const employee_id = document.getElementById('loginEmpId').value.trim();
+  const pin = document.getElementById('loginPin').value.trim();
+  const msg = document.getElementById('loginMsg');
+  msg.style.color = 'var(--danger)'; msg.textContent = 'Logging in…';
+  try {
+    const data = await apiFetch('/auth/employee-login', { method:'POST', body:{ employee_id, pin, company_code } });
+    saveSession(data.token, data.employee, data.company && data.company.name);
+    msg.textContent = '';
+    goHome();
+    requestBackgroundPermission();
+  } catch(e){ msg.textContent = e.message; }
+}
+function doLogout(){
+  stopLiveLocationTracking();
+  clearSession();
+  setScreen('login');
+}
+function requestBackgroundPermission(){
+  if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() && window.Capacitor.Plugins && window.Capacitor.Plugins.BackgroundTracker) {
+    window.Capacitor.Plugins.BackgroundTracker.requestPermissions().then(res=>{
+      if (!res.backgroundGranted && !localStorage.getItem('geovixa_bg_prompted')) {
+        localStorage.setItem('geovixa_bg_prompted','1');
+        window.Capacitor.Plugins.BackgroundTracker.openBackgroundLocationSettings();
+      }
+    }).catch(()=>{});
+  }
+}
+
+// =====================================================================================
+// DASHBOARD / ATTENDANCE STATUS
+// =====================================================================================
+let currentStatus = null; // 'on_duty' | 'off_duty' | null
+let durationTimer = null;
+let punchInAt = null;
+
+function fmtTime(iso){
+  return new Date(iso).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true });
+}
+function fmtDuration(ms){
+  const h = Math.floor(ms/3600000), m = Math.floor((ms%3600000)/60000);
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
+function tickDuration(){
+  if (!punchInAt) return;
+  const dur = Date.now() - punchInAt;
+  const label = fmtDuration(dur);
+  document.getElementById('dutyRing').innerHTML = label+'<span>HRS</span>';
+  document.getElementById('attDur').textContent = label;
+  const h = Math.floor(dur/3600000), m = Math.floor((dur%3600000)/60000);
+  document.getElementById('sumHours').textContent = h+'h '+m+'m';
+}
+
+async function loadDashboard(){
+  const emp = getEmployee();
+  if (!emp) { setScreen('login'); return; }
+  document.getElementById('greetName').textContent = emp.name + ' 👋';
+  document.getElementById('profName').textContent = emp.name;
+  document.getElementById('profId').textContent = 'Employee ID: ' + emp.employee_id;
+  document.getElementById('profAvatar').textContent = (emp.name||'--').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+
+  try {
+    const data = await apiFetch('/attendance/today/' + encodeURIComponent(emp.employee_id));
+    currentStatus = data.current_status;
+    const onDuty = currentStatus === 'on_duty';
+    const punchInRec = data.records.find(r=>r.status==='on_duty');
+    const punchOutRec = data.records.find(r=>r.status==='off_duty');
+    punchInAt = punchInRec ? new Date(punchInRec.server_time).getTime() : null;
+
+    document.getElementById('dutyBadge').textContent = onDuty ? 'ON DUTY' : 'OFF DUTY';
+    document.getElementById('dutySince').textContent = punchInRec ? ('Since '+fmtTime(punchInRec.server_time)) : 'Not punched in today';
+    document.getElementById('attStatus').textContent = onDuty ? 'ON DUTY' : 'OFF DUTY';
+    document.getElementById('attSince').textContent = punchInRec ? ('Since '+fmtTime(punchInRec.server_time)) : 'Not punched in';
+    document.getElementById('attPunchInTime').textContent = punchInRec ? fmtTime(punchInRec.server_time) : '--:--';
+    document.getElementById('attPunchOutTime').textContent = punchOutRec ? fmtTime(punchOutRec.server_time) : '--:--';
+    document.getElementById('sumStatus').textContent = onDuty ? 'On Duty' : 'Off Duty';
+    document.getElementById('sumEdits').textContent = data.records.length;
+    document.getElementById('profStatus').textContent = onDuty ? '🟢 ON DUTY' : '🔴 OFF DUTY';
+
+    const attBtn = document.getElementById('attActionBtn');
+    attBtn.textContent = onDuty ? 'PUNCH OUT' : 'PUNCH IN';
+    attBtn.className = onDuty ? 'btn-primary btn-danger' : 'btn-primary';
+
+    document.getElementById('attHistoryList').innerHTML = data.records.map(r=>
+      '<div class="punch-row"><div class="l">'+(r.status==='on_duty'?'🟢 Punch In':'🔴 Punch Out')+'</div><div>'+fmtTime(r.server_time)+'</div></div>'
+    ).join('') || '<div style="font-size:11px;color:var(--text-dim);">No punches yet today.</div>';
+
+    if (durationTimer) clearInterval(durationTimer);
+    if (onDuty) { tickDuration(); durationTimer = setInterval(tickDuration, 30000); startLiveLocationTracking(); }
+    else { document.getElementById('dutyRing').innerHTML = '00:00<span>HRS</span>'; document.getElementById('attDur').textContent='00:00'; stopLiveLocationTracking(); }
+  } catch(e){ console.warn(e.message); }
+}
+
+// =====================================================================================
+// PUNCH IN / OUT FLOW — real GPS + real camera
+// =====================================================================================
+let punchLat=null, punchLng=null, punchAccuracy=null, selfieDataUrl=null, camStream=null;
+
+function openPunchFlow(){
+  document.getElementById('punchTitle').textContent = currentStatus==='on_duty' ? 'Punch Out' : 'Punch In';
+  document.getElementById('locBanner').textContent = '📍 Getting your location…';
+  document.getElementById('locBanner').style.background = 'var(--pill-bg)';
+  document.getElementById('locBanner').style.color = 'var(--text-dim)';
+  document.getElementById('confirmSection').style.display='none';
+  document.getElementById('selfiePreview').style.display='none';
+  document.getElementById('selfiePlaceholder').style.display='flex';
+  document.getElementById('camVideo').style.display='none';
+  document.getElementById('camBtn').textContent = '📷 OPEN CAMERA';
+  document.getElementById('punchError').textContent='';
+  selfieDataUrl=null; punchLat=null; punchLng=null;
+  setScreen('punchin');
+
+  if (!navigator.geolocation) {
+    document.getElementById('locBanner').textContent = '❌ GPS not available on this device';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    punchLat = pos.coords.latitude; punchLng = pos.coords.longitude; punchAccuracy = pos.coords.accuracy;
+    document.getElementById('locBanner').textContent = '✅ Location found — accuracy '+Math.round(punchAccuracy)+'m';
+    document.getElementById('locBanner').style.background = 'rgba(15,190,107,0.1)';
+    document.getElementById('locBanner').style.color = 'var(--success)';
+  }, err=>{
+    document.getElementById('locBanner').textContent = '❌ Could not get location: '+err.message;
+  }, { enableHighAccuracy:true, timeout:20000, maximumAge:0 });
+}
+
+function cancelPunchFlow(){
+  stopCamera();
+  goHome();
+}
+
+async function handleCameraButton(){
+  if (!selfieDataUrl) {
+    // open camera if not already open
+    if (!camStream) { await openCamera(); return; }
+    captureSelfie();
+  }
+}
+async function openCamera(){
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user' }, audio:false });
+    const video = document.getElementById('camVideo');
+    video.srcObject = camStream;
+    video.style.display='block';
+    document.getElementById('selfiePlaceholder').style.display='none';
+    document.getElementById('camBtn').textContent = '📸 CAPTURE';
+  } catch(e){
+    document.getElementById('punchError').textContent = 'Camera access denied: '+e.message;
+  }
+}
+function captureSelfie(){
+  const video = document.getElementById('camVideo');
+  const canvas = document.getElementById('camCanvas');
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  selfieDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+  stopCamera();
+  video.style.display='none';
+  const preview = document.getElementById('selfiePreview');
+  preview.src = selfieDataUrl; preview.style.display='block';
+  document.getElementById('camBtn').style.display='none';
+  document.getElementById('confirmSection').style.display='block';
+  document.getElementById('confirmTime').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('submitPunchBtn').textContent = 'CONFIRM ' + (currentStatus==='on_duty' ? 'PUNCH OUT' : 'PUNCH IN');
+}
+function stopCamera(){
+  if (camStream) { camStream.getTracks().forEach(t=>t.stop()); camStream=null; }
+}
+
+async function submitPunch(){
+  const btn = document.getElementById('submitPunchBtn');
+  const errEl = document.getElementById('punchError');
+  errEl.textContent='';
+  if (punchLat==null || punchLng==null) { errEl.textContent='Location not ready yet.'; return; }
+  if (!selfieDataUrl) { errEl.textContent='Please capture a selfie first.'; return; }
+  btn.textContent = 'Submitting…';
+  try {
+    const status = currentStatus==='on_duty' ? 'off_duty' : 'on_duty';
+    await apiFetch('/attendance/punch', { method:'POST', body:{
+      status, photo:selfieDataUrl, latitude:punchLat, longitude:punchLng, accuracy:punchAccuracy
+    }});
+    goHome();
+  } catch(e){ errEl.textContent = e.message; btn.textContent='CONFIRM'; }
+}
+
+// =====================================================================================
+// LIVE LOCATION TRACKING (foreground JS + native background hand-off)
+// =====================================================================================
+let liveLocationTimer = null;
+function nativeTrackerAvailable(){
+  return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform() && window.Capacitor.Plugins && window.Capacitor.Plugins.BackgroundTracker);
+}
+function startLiveLocationTracking(){
+  if (nativeTrackerAvailable()) {
+    try { window.Capacitor.Plugins.BackgroundTracker.start({ token:getToken(), apiBase: window.location.origin + API }); } catch(e){}
+  }
+  if (liveLocationTimer) return;
+  const sendPing = ()=>{
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(pos=>{
+      apiFetch('/attendance/location-ping', { method:'POST', body:{ latitude:pos.coords.latitude, longitude:pos.coords.longitude } }).catch(()=>{});
+    }, ()=>{}, { enableHighAccuracy:true, timeout:15000, maximumAge:60000 });
+  };
+  sendPing();
+  liveLocationTimer = setInterval(sendPing, 90000);
+}
+function stopLiveLocationTracking(){
+  if (nativeTrackerAvailable()) { try { window.Capacitor.Plugins.BackgroundTracker.stop(); } catch(e){} }
+  if (liveLocationTimer) { clearInterval(liveLocationTimer); liveLocationTimer=null; }
+}
+
+// =====================================================================================
+// LEAVE
+// =====================================================================================
+async function loadLeave(){
+  try {
+    const data = await apiFetch('/leave/my/requests');
+    document.getElementById('leaveList').innerHTML = data.requests.map(r=>
+      '<div class="leave-item"><div class="top">'+r.from_date+' – '+r.to_date+' <span class="status-chip" style="background:'+
+      (r.status==='approved'?'rgba(15,190,107,0.12);color:var(--success)':r.status==='rejected'?'rgba(240,71,60,0.12);color:var(--danger)':'rgba(245,166,35,0.12);color:var(--warn)')+
+      '">'+r.status.toUpperCase()+'</span></div><div class="sub">'+r.reason+'</div></div>'
+    ).join('') || '<div style="font-size:11px;color:var(--text-dim);">No leave applications yet.</div>';
+  } catch(e){ document.getElementById('leaveList').textContent = e.message; }
+}
+async function submitLeave(){
+  const from_date = document.getElementById('leaveFrom').value;
+  const to_date = document.getElementById('leaveTo').value;
+  const reason = document.getElementById('leaveReason').value.trim();
+  const msg = document.getElementById('leaveMsg');
+  if (!from_date || !to_date || !reason) { msg.style.color='var(--danger)'; msg.textContent='Please fill all fields.'; return; }
+  try {
+    const data = await apiFetch('/leave/my/request', { method:'POST', body:{ from_date, to_date, reason } });
+    msg.style.color='var(--success)'; msg.textContent = data.message;
+    document.getElementById('leaveFrom').value=''; document.getElementById('leaveTo').value=''; document.getElementById('leaveReason').value='';
+    loadLeave();
+  } catch(e){ msg.style.color='var(--danger)'; msg.textContent = e.message; }
+}
+
+// =====================================================================================
+// SALARY
+// =====================================================================================
+async function loadSalary(){
+  try {
+    const [monthsData, reqData] = await Promise.all([
+      apiFetch('/salary/my/requestable-months'),
+      apiFetch('/salary/my/slip-requests')
+    ]);
+    const tabsEl = document.getElementById('salaryMonthTabs');
+    tabsEl.innerHTML = monthsData.months.map((m,i)=>'<div class="tabpill'+(i===0?' active':'')+'" onclick="selectSalaryMonth(\''+m+'\', this)">'+m+'</div>').join('');
+    document.getElementById('salaryRequestList').innerHTML = reqData.requests.map(r=>
+      '<div class="salary-hist-item"><span>'+r.month+'</span><span class="status-chip" style="background:'+
+      (r.status==='approved'?'rgba(15,190,107,0.12);color:var(--success)':r.status==='rejected'?'rgba(240,71,60,0.12);color:var(--danger)':'rgba(245,166,35,0.12);color:var(--warn)')+
+      '">'+r.status.toUpperCase()+'</span></div>'
+    ).join('') || '<div style="font-size:11px;color:var(--text-dim);">No requests yet.</div>';
+    if (monthsData.months[0]) selectSalaryMonth(monthsData.months[0]);
+  } catch(e){ document.getElementById('salaryMsg').textContent = e.message; }
+}
+async function selectSalaryMonth(month, el){
+  document.querySelectorAll('#salaryMonthTabs .tabpill').forEach(t=>t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const msgEl = document.getElementById('salaryMsg');
+  const cardEl = document.getElementById('salarySlipCard');
+  msgEl.textContent=''; cardEl.style.display='none';
+  try {
+    const data = await apiFetch('/salary/my/slip?month='+month);
+    const s = data.slip;
+    document.getElementById('salBasic').textContent = '₹'+(s.earnedBasic ?? s.basic_salary ?? 0);
+    document.getElementById('salHra').textContent = '₹'+(s.earnedHra ?? s.hra ?? 0);
+    document.getElementById('salAllow').textContent = '₹'+(s.earnedAllowances ?? s.other_allowances ?? 0);
+    document.getElementById('salDeduct').textContent = '−₹'+(s.deductions ?? 0);
+    document.getElementById('salNet').textContent = '₹'+(s.netPay ?? 0);
+    cardEl.style.display='block';
+  } catch(e){
+    msgEl.textContent = e.message + ' — ';
+    msgEl.innerHTML += '<span style="color:var(--primary);cursor:pointer;text-decoration:underline;" onclick="requestSalarySlip(\''+month+'\')">Raise request</span>';
+  }
+}
+async function requestSalarySlip(month){
+  try {
+    const data = await apiFetch('/salary/my/slip-request', { method:'POST', body:{ month } });
+    document.getElementById('salaryMsg').textContent = data.message;
+    loadSalary();
+  } catch(e){ document.getElementById('salaryMsg').textContent = e.message; }
+}
+
+// =====================================================================================
+// NOTIFICATIONS (announcements)
+// =====================================================================================
+async function loadNotifications(){
+  try {
+    const data = await apiFetch('/announcements/my');
+    document.getElementById('notifList').innerHTML = data.announcements.map(a=>
+      '<div class="notif-card"><div class="notif-ic" style="background:#146EF5;">📢</div><div><div class="h">'+a.title+'</div><div class="d">'+a.message+'</div><div class="t">'+new Date(a.created_at).toLocaleDateString('en-IN')+'</div></div></div>'
+    ).join('') || '<div style="font-size:11px;color:var(--text-dim);">No announcements yet.</div>';
+  } catch(e){ document.getElementById('notifList').textContent = e.message; }
+}
+
+// =====================================================================================
+// SOS
+// =====================================================================================
+function sendSOS(){
+  if (!confirm('Send SOS? This will alert your manager and admin immediately.')) return;
+  const msg = document.getElementById('sosMsg');
+  msg.style.color='var(--text-dim)'; msg.textContent='Getting your location…';
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    try {
+      const data = await apiFetch('/sos', { method:'POST', body:{ type:'other', latitude:pos.coords.latitude, longitude:pos.coords.longitude } });
+      msg.style.color='var(--success)'; msg.textContent = data.message;
+    } catch(e){ msg.style.color='var(--danger)'; msg.textContent = e.message; }
+  }, async ()=>{
+    try {
+      const data = await apiFetch('/sos', { method:'POST', body:{ type:'other' } });
+      msg.style.color='var(--success)'; msg.textContent = data.message;
+    } catch(e){ msg.style.color='var(--danger)'; msg.textContent = e.message; }
+  });
+}
+
+// =====================================================================================
+// BOOTSTRAP
+// =====================================================================================
+window.addEventListener('DOMContentLoaded', ()=>{
+  if (getToken() && getEmployee()) { goHome(); }
+  else { setScreen('login'); }
+});
+</script>
+</body>
+</html>
