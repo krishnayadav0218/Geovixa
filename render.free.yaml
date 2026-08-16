@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: geovixa-backend
+    runtime: node
+    plan: free             # FREE for testing — sleeps after 15 min inactivity, cold start ~30-50s
+                            # on next request, and does NOT support a persistent disk (see below).
+                            # Switch back to "starter" ($7/mo) before real/production use.
+    region: singapore      # closest region to India with lowest latency on Render; change if needed
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    # NOTE: no "disk:" block here — Render's free plan doesn't allow persistent disks.
+    # This means selfie photos saved to DATA_DIR will be WIPED every time the service
+    # restarts or redeploys (free instances restart often). Fine for testing the app's
+    # screens/flows; not fine for real attendance photo records — upgrade to "starter"
+    # for that (just change plan back to "starter" and add the disk: block back).
+    envVars:
+      - key: DATA_DIR
+        value: /opt/render/project/src/backend/data   # local (non-persistent) folder on free tier
+      - key: PORT
+        value: 5000
+      # REQUIRED — without this the app has no database to talk to. Set this manually in the
+      # Render dashboard (Environment tab) to your Supabase "Transaction pooler" connection
+      # string.
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false        # set manually in Render dashboard — never commit real secrets to git
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: MANAGER_USERNAME
+        sync: false
+      - key: MANAGER_PASSWORD
+        sync: false
+      - key: PROJECT_NAME
+        value: Geovixa
+      - key: COMPANY_NAME
+        value: Geovixa
