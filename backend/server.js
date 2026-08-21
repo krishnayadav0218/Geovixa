@@ -33,8 +33,8 @@ if (WEAK_JWT_SECRETS.includes(process.env.JWT_SECRET.toLowerCase())) {
 
 const { init } = require('./db');
 const { startAutoAssignBackgroundLoop } = require('./autoAssignEngine');
-const { startSosEscalationLoop } = require('./routes/sosEscalation');
-const { startShiftReminderLoop } = require('./shiftReminder');
+const { startSosEscalationLoop } = require('./sosEscalation');
+const { startShiftReminderLoop } = require('./routes/shiftReminder');
 const seedAdmin = require('./seedAdmin');
 const seedManager = require('./seedManager');
 const seedSuperAdmin = require('./seedSuperAdmin');
