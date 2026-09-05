@@ -1,0 +1,47 @@
+name: Backend Tests
+
+# Runs the Jest suite (backend/tests/) on every push and PR that touches the backend, so a
+# new feature can never merge while breaking punch/geofence/GPS-anomaly/leave-approval logic
+# — this is the actual point of having tests at all (see REVIEW.md item #1).
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-tests.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-tests.yml'
+  workflow_dispatch: {} # allows a manual re-run from the Actions tab
+
+jobs:
+  test:
+    name: npm test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test suite
+        run: npm test
+
+      - name: Check backend files parse (node --check)
+        # Cheap extra safety net: every .js file under the backend must at least be valid
+        # syntax, even ones not directly exercised by a route test yet.
+        run: |
+          find . -name "*.js" -not -path "./node_modules/*" -print0 \
+            | xargs -0 -n1 node --check
